@@ -28,7 +28,7 @@ public class MainFrame extends JFrame implements ToolSelectionListener
 
         // 캔버스 패널 생성
         // TODO: 나중에 실제 그림을 그릴 Custom Canvas Panel 클래스로 교체 필요
-        canvasPanel = new CanvasPanelFactory().createPanel();
+        canvasPanel = CanvasPanelFactory.getInstance().createPanel();
         canvasPanel.setBackground(Color.WHITE);
 
         // 캔버스 패널에 현재 도구를 표시하는 레이블 추가
@@ -36,7 +36,7 @@ public class MainFrame extends JFrame implements ToolSelectionListener
         canvasPanel.add(currentToolLabel);
 
         // 툴바 패널 생성
-        toolbarPanel = new ToolbarPanelFactory().createPanel();
+        toolbarPanel = ToolbarPanelFactory.getInstance().createPanel();
         toolbarPanel.addToolSelectionListener(this);    // MainFrame을 도구 선택 이벤트 리스너로 등록
 
         // 컨텐츠 펜에 패널 추가

@@ -4,6 +4,11 @@ import javax.swing.*;
 
 public class MainFrameFactory implements FrameFactory
 {
+    // 싱글톤
+    private MainFrameFactory() {}
+    private static class SingleInstanceHolder { private static final MainFrameFactory INSTANCE = new MainFrameFactory(); }
+    public static MainFrameFactory getInstance() { return SingleInstanceHolder.INSTANCE; }
+
     @Override
     public JFrame createFrame(String title, int width, int height)
     {
