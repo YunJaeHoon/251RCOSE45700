@@ -1,9 +1,6 @@
 package frame;
 
-import tool.ToolbarPanel;
-
 import javax.swing.*;
-import java.awt.*;
 
 public class MainFrameFactory implements FrameFactory
 {
