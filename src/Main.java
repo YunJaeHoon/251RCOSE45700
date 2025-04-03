@@ -1,4 +1,5 @@
 import frame.FrameFactory;
+import frame.MainFrame;
 import frame.MainFrameFactory;
 
 import javax.swing.*;

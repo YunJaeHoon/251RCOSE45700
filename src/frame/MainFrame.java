@@ -17,7 +17,7 @@ public class MainFrame extends JFrame implements ToolSelectionListener
     ToolMode currentToolMode;   // 현재 도구
     JLabel currentToolLabel;    // 현재 도구를 표시하는 레이블
 
-    public MainFrame()
+    MainFrame()
     {
         // 컨텐츠 펜 설정
         Container contentPane = this.getContentPane();

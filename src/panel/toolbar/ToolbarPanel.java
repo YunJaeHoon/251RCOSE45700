@@ -17,7 +17,7 @@ public class ToolbarPanel extends JPanel
     private ToolMode currentToolMode;                       // 현재 도구
 
     // 생성자 내부에서 버튼 생성 호출 시 경로 수정
-    public ToolbarPanel()
+    ToolbarPanel()
     {
         // 객체 생성
         super(new BorderLayout());
