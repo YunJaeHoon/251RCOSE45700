@@ -1,4 +1,4 @@
-package frame;
+package tool;
 import java.util.EventListener;
 
 public interface ToolSelectionListener extends EventListener {
