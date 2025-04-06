@@ -1,7 +1,6 @@
 package panel.toolbar;
 
 import tool.ToolMode;
-import tool.ToolSelectionListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,41 +10,37 @@ import java.util.List;
 
 public class ToolbarPanel extends JPanel
 {
-    private final List<ToolSelectionListener> listeners;    // 도구 선택 이벤트 리스너 리스트
-    private final JToolBar toolBar;                         // 도구 선택창
-    private final ButtonGroup buttonGroup;                  // 도구 단일 선택을 위한 버튼 그룹
-    private ToolMode currentToolMode;                       // 현재 도구
+    private ToolMode currentToolMode = ToolMode.SELECT;                 // 현재 도구 모드
+    private final JToolBar toolBar = new JToolBar(JToolBar.VERTICAL);   // 도구 선택창
+    private final ButtonGroup buttonGroup = new ButtonGroup();          // 도구 단일 선택을 위한 버튼 그룹
 
-    // 생성자 내부에서 버튼 생성 호출 시 경로 수정
+    // 도구 선택 이벤트 리스너 리스트
+    private final List<ToolSelectionListener> toolSelectionListeners = new ArrayList<>();
+
+    // 생성자
     ToolbarPanel()
     {
         // 객체 생성
         super(new BorderLayout());
 
-        // 필드 변수 초기화
-        this.listeners = new ArrayList<>();
-        this.toolBar = new JToolBar(JToolBar.VERTICAL);
-        this.buttonGroup = new ButtonGroup();
-        this.currentToolMode = ToolMode.SELECT;
-
         // 툴바 설정
-        this.toolBar.setFloatable(false);
+        toolBar.setFloatable(false);
 
         // 버튼 생성
-        JToggleButton selectButton = createToolButton("Select", "/icons/select.png", ToolMode.SELECT);
+        JToggleButton initialButton = createToolButton("Select", "/icons/select.png", ToolMode.SELECT);
+        initialButton.setSelected(true);
+
         createToolButton("Line", "/icons/line.png", ToolMode.LINE);
         createToolButton("Rectangle", "/icons/rectangle.png", ToolMode.RECTANGLE);
         createToolButton("Ellipse", "/icons/ellipse.png", ToolMode.ELLIPSE);
         createToolButton("Text", "/icons/text.png", ToolMode.TEXT);
 
-        // SELECT 버튼을 기본으로 선택
-        selectButton.setSelected(true);
-
         // 툴바 추가
         add(toolBar, BorderLayout.CENTER);
     }
 
-    private JToggleButton createToolButton(String name, String relativeIconPath, ToolMode mode)
+    // 버튼 생성 메서드
+    private JToggleButton createToolButton(String name, String relativeIconPath, ToolMode selectedToolMode)
     {
         // 버튼 생성
         JToggleButton button = new JToggleButton();
@@ -66,10 +61,10 @@ public class ToolbarPanel extends JPanel
 
         // 액션 리스너: 버튼 클릭 시 모드 변경 및 리스너 알림
         button.addActionListener(e -> {
-            if (button.isSelected() && currentToolMode != mode)
+            if (button.isSelected() && currentToolMode != selectedToolMode)
             {
-                currentToolMode = mode;
-                notifyListeners(currentToolMode);
+                currentToolMode = selectedToolMode;
+                notifyToolSelection(currentToolMode);
             }
         });
 
@@ -79,20 +74,21 @@ public class ToolbarPanel extends JPanel
         return button;
     }
 
-    // 리스너 추가 메소드
+    // 도구 선택 이벤트 리스너 추가 메서드
     public void addToolSelectionListener(ToolSelectionListener listener) {
-        listeners.add(listener);
+        toolSelectionListeners.add(listener);
+        listener.toolSelected(currentToolMode);
     }
 
-    // 리스너 제거 메소드
+    // 도구 선택 이벤트 리스너 제거 메서드
     public void removeToolSelectionListener(ToolSelectionListener listener) {
-        listeners.remove(listener);
+        toolSelectionListeners.remove(listener);
     }
 
-    // 등록된 모든 리스너에게 알림
-    private void notifyListeners(ToolMode selectedTool) {
-        for (ToolSelectionListener listener : listeners) {
-            listener.toolSelected(selectedTool);
+    // 등록된 모든 리스너에게 도구 선택 이벤트 알림
+    private void notifyToolSelection(ToolMode selectedToolMode) {
+        for (ToolSelectionListener listener : toolSelectionListeners) {
+            listener.toolSelected(selectedToolMode);
         }
     }
 }

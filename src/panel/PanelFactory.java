@@ -2,8 +2,8 @@ package panel;
 
 import javax.swing.*;
 
-public interface PanelFactory<T extends JPanel>
+public interface PanelFactory
 {
     // 패널 생성
-    T createPanel();
+    JPanel createPanel();
 }

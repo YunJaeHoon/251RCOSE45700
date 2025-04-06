@@ -2,7 +2,10 @@ package panel.canvas;
 
 import panel.PanelFactory;
 
-public class CanvasPanelFactory implements PanelFactory<CanvasPanel>
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
+public class CanvasPanelFactory implements PanelFactory
 {
     // 싱글톤
     private CanvasPanelFactory() {}

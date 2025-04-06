@@ -5,7 +5,7 @@ import panel.canvas.CanvasPanelFactory;
 
 import javax.swing.*;
 
-public class ToolbarPanelFactory implements PanelFactory<ToolbarPanel>
+public class ToolbarPanelFactory implements PanelFactory
 {
     // 싱글톤
     private ToolbarPanelFactory() {}
