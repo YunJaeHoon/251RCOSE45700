@@ -11,6 +11,6 @@ public class LineFactory implements ComponentFactory
 
     @Override
     public Line createComponent(MouseEvent e) {
-        return new Line(e.getX(), e.getY(), e.getX(), e.getY());
+        return new Line();
     }
 }
