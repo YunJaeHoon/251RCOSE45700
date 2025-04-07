@@ -1,6 +1,7 @@
 package panel.canvas;
 
 import tool.Component;
+import tool.Text;
 import tool.ToolMode;
 import panel.toolbar.ToolSelectionListener;
 
@@ -68,6 +69,7 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, MouseL
         if (currentComponent != null)
         {
             currentComponent.onMouseReleased(e);
+
             components.add(currentComponent);
             currentComponent = null;
             repaint();
