@@ -6,31 +6,27 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-public class Text implements Component
+public class Text extends JTextField implements Component
 {
     private int x, y;
     private Color color;
-    private JTextField textField;
 
     @Override
     public void onMousePressed(MouseEvent e, Color color)
     {
         x = e.getX();
         y = e.getY();
-        textField = new JTextField();
         this.color = color;
 
-        textField.setBounds(x, y, 100, 20);
-        textField.setBorder(BorderFactory.createEmptyBorder());
-        textField.setForeground(color);
-        textField.addActionListener(event -> {
-            textField.setVisible(false);
-        });
+        setBounds(x, y, 100, 20);
+        setBorder(BorderFactory.createEmptyBorder());
+        setForeground(color);
+        setOpaque(false);
 
         java.awt.Component source = e.getComponent();
         if (source instanceof CanvasPanel) {
-            ((CanvasPanel) source).add(textField);
-            textField.requestFocus();
+            ((CanvasPanel) source).add(this);
+            requestFocus();
         }
     }
 
@@ -43,10 +39,12 @@ public class Text implements Component
     @Override
     public void draw(Graphics g)
     {
-        if (textField != null && !textField.isVisible())
+        if (!isVisible())
         {
             g.setColor(color);
-            g.drawString(textField.getText(), x, y);
+            FontMetrics metrics = g.getFontMetrics(getFont());
+            int adjustedY = y + metrics.getAscent();
+            g.drawString(getText(), x, adjustedY);
         }
     }
 }

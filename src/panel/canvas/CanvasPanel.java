@@ -20,18 +20,25 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
     private Component currentComponent;         // 현재 대상 컴포넌트 객체
     private ToolMode currentToolMode;           // 현재 도구 모드
     private Color currentColor;                 // 현재 색상
-    JLabel currentToolLabel = new JLabel();     // 현재 도구를 표시하는 레이블
+
+    private final JLabel currentToolLabel = new JLabel();   // 현재 도구를 표시하는 레이블
 
     // 생성자
     CanvasPanel()
     {
+        // 수동 배치 사용
+        this.setLayout(null);
+
         // 마우스 이벤트 리스너 등록
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
 
+        // 배경색 설정
         this.setBackground(Color.WHITE);
 
-        this.add(currentToolLabel, BorderLayout.NORTH);
+        // 현재 도구 레이블 설정
+        currentToolLabel.setBounds(10, 10, 200, 20);
+        this.add(currentToolLabel);
     }
 
     // 도구 선택 이벤트 처리 메서드
