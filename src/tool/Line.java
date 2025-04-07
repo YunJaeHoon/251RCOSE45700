@@ -2,19 +2,20 @@ package tool;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 
 public class Line implements Component
 {
     private int startX, startY, endX, endY;
+    private Color color;
 
     @Override
-    public void onMousePressed(MouseEvent e)
+    public void onMousePressed(MouseEvent e, Color color)
     {
         startX = e.getX();
         startY = e.getY();
         endX = startX;
         endY = startY;
+        this.color = color;
     }
 
     @Override
@@ -32,7 +33,9 @@ public class Line implements Component
     }
 
     @Override
-    public void draw(Graphics g) {
+    public void draw(Graphics g)
+    {
+        g.setColor(color);
         g.drawLine(startX, startY, endX, endY);
     }
 }

@@ -6,14 +6,16 @@ import java.awt.event.MouseEvent;
 public class Ellipse implements Component
 {
     private int startX, startY, endX, endY;
+    private Color color;
 
     @Override
-    public void onMousePressed(MouseEvent e)
+    public void onMousePressed(MouseEvent e, Color color)
     {
         startX = e.getX();
         startY = e.getY();
         endX = startX;
         endY = startY;
+        this.color = color;
     }
 
     @Override
@@ -38,6 +40,7 @@ public class Ellipse implements Component
         int width = Math.abs(endX - startX);
         int height = Math.abs(endY - startY);
 
-        g.drawOval(x, y, width, height);
+        g.setColor(color);
+        g.fillOval(x, y, width, height);
     }
 }

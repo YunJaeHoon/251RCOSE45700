@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 public class Select implements Component
 {
     @Override
-    public void onMousePressed(MouseEvent e) {
+    public void onMousePressed(MouseEvent e, Color color) {
 
     }
 

@@ -1,5 +1,6 @@
 package panel.canvas;
 
+import panel.color.ColorSelectionListener;
 import tool.Component;
 import tool.Text;
 import tool.ToolMode;
@@ -12,12 +13,13 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
-public class CanvasPanel extends JPanel implements ToolSelectionListener, MouseListener, MouseMotionListener
+public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorSelectionListener, MouseListener, MouseMotionListener
 {
     private final ArrayList<Component> components = new ArrayList<>();  // 지금까지 그려진 컴포넌트
 
     private Component currentComponent;         // 현재 대상 컴포넌트 객체
     private ToolMode currentToolMode;           // 현재 도구 모드
+    private Color currentColor;                 // 현재 색상
     JLabel currentToolLabel = new JLabel();     // 현재 도구를 표시하는 레이블
 
     // 생성자
@@ -43,12 +45,23 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, MouseL
         currentToolLabel.setText("현재 도구: " + selectedTool);
     }
 
+    // 색상 선택 이벤트 처리 메서드
+    @Override
+    public void colorSelected(Color color)
+    {
+        if(currentColor == color)
+            return;
+
+        currentColor = color;
+        System.out.println(currentColor);
+    }
+
     // 마우스 버튼을 눌렀을 때, 이벤트 처리 메서드
     @Override
     public void mousePressed(MouseEvent e)
     {
         currentComponent = currentToolMode.getComponentFactory().createComponent(e);
-        currentComponent.onMousePressed(e);
+        currentComponent.onMousePressed(e, currentColor);
         repaint();
     }
 
