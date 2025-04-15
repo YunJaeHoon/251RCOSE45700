@@ -75,7 +75,7 @@ public class ColorPanel  extends JPanel
                 button.revalidate();
 
                 // 리스너에게 색상 선택 이벤트 알림
-                notifyToolSelection(selectedColor);
+                notifyColorSelection(selectedColor);
 
                 // 다른 버튼의 크기는 원래대로 되돌리기
                 for (AbstractButton otherButton : Collections.list(buttonGroup.getElements())) {
@@ -94,18 +94,18 @@ public class ColorPanel  extends JPanel
     }
 
     // 색상 선택 이벤트 리스너 추가 메서드
-    public void addToolSelectionListener(ColorSelectionListener listener) {
+    public void addColorSelectionListener(ColorSelectionListener listener) {
         colorSelectionListeners.add(listener);
         listener.colorSelected(currentColor);
     }
 
     // 색상 선택 이벤트 리스너 제거 메서드
-    public void removeToolSelectionListener(ColorSelectionListener listener) {
+    public void removeColorSelectionListener(ColorSelectionListener listener) {
         colorSelectionListeners.remove(listener);
     }
 
     // 등록된 모든 리스너에게 색상 선택 이벤트 알림
-    private void notifyToolSelection(Color selectedColor) {
+    private void notifyColorSelection(Color selectedColor) {
         for (ColorSelectionListener listener : colorSelectionListeners) {
             listener.colorSelected(selectedColor);
         }

@@ -31,7 +31,7 @@ public class MainFrame extends JFrame
 
         // 컬러 패널 생성
         colorPanel = ColorPanelFactory.getInstance().createPanel();
-        colorPanel.addToolSelectionListener(canvasPanel);
+        colorPanel.addColorSelectionListener(canvasPanel);
 
         // 컨텐츠 펜에 패널 추가
         contentPane.add(new JScrollPane(canvasPanel), BorderLayout.CENTER);
