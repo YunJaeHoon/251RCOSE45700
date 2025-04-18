@@ -31,6 +31,12 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
     // 이동 시 기준 좌표 오프셋
     private final Point offset = new Point();
 
+    // 추가된 크기 조절 관련 필드
+    private boolean isResizing = false;
+    private Component resizingComponent = null;
+    private final int HANDLE_SIZE = 10;
+    private final Point resizeStartPoint = new Point();
+
     public void setPropertyPanel(PropertyPanel propertyPanel) {
         this.propertyPanel = propertyPanel;
         // PropertyPanel에 CanvasPanel 참조 전달
@@ -125,24 +131,39 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
             // Ctrl 키가 눌렸는지 체크
             boolean ctrlDown = (e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) != 0;
             boolean found = false;
-            // 역순으로 hit test 수행
-            for (int i = components.size() - 1; i >= 0; i--) {
-                Component comp = components.get(i);
-                if (comp.contains(e.getPoint())) {
+            // 단일 선택된 컴포넌트의 오른쪽 아래 핸들 영역을 체크하여 크기 조절 모드 전환
+            if (selectedComponents.size() == 1) {
+                Component comp = selectedComponents.get(0);
+                Rectangle bounds = comp.getBounds();
+                Rectangle resizeHandle = new Rectangle(bounds.x + bounds.width,
+                        bounds.y + bounds.height, HANDLE_SIZE, HANDLE_SIZE);
+                if (resizeHandle.contains(e.getPoint())) {
+                    isResizing = true;
+                    resizingComponent = comp;
+                    resizeStartPoint.setLocation(e.getX(), e.getY());
                     found = true;
-                    // Ctrl 키가 없으면 단일 선택으로 처리
-                    if (!ctrlDown) {
-                        selectedComponents.clear();
+                }
+            }
+            if (!found) {
+            // 역순으로 hit test 수행
+                for (int i = components.size() - 1; i >= 0; i--) {
+                    Component comp = components.get(i);
+                    if (comp.contains(e.getPoint())) {
+                        found = true;
+                        // Ctrl 키가 없으면 단일 선택으로 처리
+                        if (!ctrlDown) {
+                            selectedComponents.clear();
+                        }
+                        if (!selectedComponents.contains(comp)) {
+                            selectedComponents.add(comp);
+                        }
+                        // 선택된 컴포넌트가 하나인지 여부와 상관없이 항상 속성창에 전달
+                        if (propertyPanel != null) {
+                            propertyPanel.displayProperties(selectedComponents);
+                        }
+                        repaint();
+                        break;
                     }
-                    if (!selectedComponents.contains(comp)) {
-                        selectedComponents.add(comp);
-                    }
-                    // 선택된 컴포넌트가 하나인지 여부와 상관없이 항상 속성창에 전달
-                    if (propertyPanel != null) {
-                        propertyPanel.displayProperties(selectedComponents);
-                    }
-                    repaint();
-                    break;
                 }
             }
             // 아무것도 hit되지 않았을 경우 선택 초기화
@@ -164,25 +185,38 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
     // 마우스 버튼을 누른채로 드래그했을 때, 이벤트 처리 메서드
     @Override
     public void mouseDragged(MouseEvent e) {
-        if (currentToolMode == ToolMode.SELECT && !selectedComponents.isEmpty()) {
-            // 각 선택된 컴포넌트에 대해 오프셋을 적용하여 이동
-            for (Component comp : selectedComponents) {
-                if (offset != null) {
-                    Properties props = comp.getProperties();
-                    int newX = e.getX() - offset.x + props.getX();
-                    int newY = e.getY() - offset.y + props.getY();
-                    comp.setProperties(newX, newY, props.getWidth(), props.getHeight(), props.getColor());
+        if (currentToolMode == ToolMode.SELECT) {
+            if (isResizing && resizingComponent != null) {
+                Properties props = resizingComponent.getProperties();
+                int x = props.getX();
+                int y = props.getY();
+                // 최소 크기는 10로 제한
+                int newWidth = Math.max(10, e.getX() - x);
+                int newHeight = Math.max(10, e.getY() - y);
+                resizingComponent.setProperties(x, y, newWidth, newHeight, props.getColor());
+                if (propertyPanel != null && selectedComponents.size() == 1) {
+                    propertyPanel.displayProperties(selectedComponents);
                 }
+                repaint();
+            } else if (!selectedComponents.isEmpty()) {            // 각 선택된 컴포넌트에 대해 오프셋을 적용하여 이동
+                for (Component comp : selectedComponents) {
+                    if (offset != null) {
+                        Properties props = comp.getProperties();
+                        int newX = e.getX() - offset.x + props.getX();
+                        int newY = e.getY() - offset.y + props.getY();
+                        comp.setProperties(newX, newY, props.getWidth(), props.getHeight(), props.getColor());
+                    }
+                }
+                if (offset != null) {
+                    offset.setLocation(e.getX(), e.getY());
+                }
+                // 단일 선택이면 속성창 업데이트
+                if (propertyPanel != null && selectedComponents.size() == 1) {
+                    propertyPanel.displayProperties(selectedComponents);
+                }
+                repaint();
             }
-            if (offset != null) {
-                offset.setLocation(e.getX(), e.getY());
-            }
-            // 단일 선택이면 속성창 업데이트
-            if (propertyPanel != null && selectedComponents.size() == 1) {
-                propertyPanel.displayProperties(selectedComponents);
-            }
-            repaint();
-        } else if (currentToolMode != ToolMode.SELECT && currentComponent != null) {
+        } else if (currentComponent != null) {
             currentComponent.onMouseDragged(e);
             repaint();
         }
@@ -192,6 +226,10 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
     @Override
     public void mouseReleased(MouseEvent e)
     {
+        if (isResizing) {
+            isResizing = false;
+            resizingComponent = null;
+        }
         if (currentComponent != null)
         {
             currentComponent.onMouseReleased(e);
@@ -219,6 +257,9 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
         for (Component comp : selectedComponents) {
             Rectangle bounds = comp.getBounds();
             g.drawRect(bounds.x - 2, bounds.y - 2, bounds.width + 4, bounds.height + 4);
+            // 크기 조절 핸들을 그려서 표시
+            g.fillRect(bounds.x + bounds.width, bounds.y + bounds.height, HANDLE_SIZE, HANDLE_SIZE);
+
         }
     }
 
