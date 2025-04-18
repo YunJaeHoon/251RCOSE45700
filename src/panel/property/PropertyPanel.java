@@ -5,8 +5,6 @@ import tool.Component;
 import tool.Properties;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -90,28 +88,20 @@ public class PropertyPanel extends JPanel {
         gbc.fill = GridBagConstraints.BOTH;
         add(new JPanel(), gbc);
 
-        DocumentListener listener = new DocumentListener() {
+        // 각 필드에 엔터키 입력 시 액션 리스너 추가
+        ActionListener listener = new ActionListener() {
             @Override
-            public void insertUpdate(DocumentEvent e) {
-                updateProperties();
-            }
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                updateProperties();
-            }
-            @Override
-            public void changedUpdate(DocumentEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 updateProperties();
             }
         };
-
-        xField.getDocument().addDocumentListener(listener);
-        yField.getDocument().addDocumentListener(listener);
-        widthField.getDocument().addDocumentListener(listener);
-        heightField.getDocument().addDocumentListener(listener);
-        redField.getDocument().addDocumentListener(listener);
-        greenField.getDocument().addDocumentListener(listener);
-        blueField.getDocument().addDocumentListener(listener);
+        xField.addActionListener(listener);
+        yField.addActionListener(listener);
+        widthField.addActionListener(listener);
+        heightField.addActionListener(listener);
+        redField.addActionListener(listener);
+        greenField.addActionListener(listener);
+        blueField.addActionListener(listener);
 
         // 다중 선택된 컴포넌트에 대해 z-order 변경 수행
         bringToFrontButton.addActionListener(new ActionListener() {
