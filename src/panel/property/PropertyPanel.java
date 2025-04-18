@@ -29,25 +29,66 @@ public class PropertyPanel extends JPanel {
     private final JButton sendToBackButton = new JButton("맨 뒤로");
 
     public PropertyPanel() {
-        setLayout(new FlowLayout(FlowLayout.LEFT));
-        add(new JLabel("x:"));
-        add(xField);
-        add(new JLabel("y:"));
-        add(yField);
-        add(new JLabel("w:"));
-        add(widthField);
-        add(new JLabel("h:"));
-        add(heightField);
-        add(new JLabel("R:"));
-        add(redField);
-        add(new JLabel("G:"));
-        add(greenField);
-        add(new JLabel("B:"));
-        add(blueField);
+        setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.WEST;
 
-        // z-order 버튼 추가
-        add(bringToFrontButton);
-        add(sendToBackButton);
+        int row = 0;
+        // 첫 번째 행: x, y, w, h
+        gbc.gridy = row;
+        gbc.gridx = 0;
+        add(new JLabel("x:"), gbc);
+        gbc.gridx = 1;
+        add(xField, gbc);
+        gbc.gridx = 2;
+        add(new JLabel("y:"), gbc);
+        gbc.gridx = 3;
+        add(yField, gbc);
+        gbc.gridx = 4;
+        add(new JLabel("w:"), gbc);
+        gbc.gridx = 5;
+        add(widthField, gbc);
+        gbc.gridx = 6;
+        add(new JLabel("h:"), gbc);
+        gbc.gridx = 7;
+        add(heightField, gbc);
+
+        // 두 번째 행: R, G, B
+        row++;
+        gbc.gridy = row;
+        gbc.gridx = 0;
+        add(new JLabel("R:"), gbc);
+        gbc.gridx = 1;
+        add(redField, gbc);
+        gbc.gridx = 2;
+        add(new JLabel("G:"), gbc);
+        gbc.gridx = 3;
+        add(greenField, gbc);
+        gbc.gridx = 4;
+        add(new JLabel("B:"), gbc);
+        gbc.gridx = 5;
+        add(blueField, gbc);
+
+        // 세 번째 행: z-order 버튼
+        row++;
+        gbc.gridy = row;
+        gbc.gridx = 0;
+        gbc.gridwidth = 4;
+        add(bringToFrontButton, gbc);
+        gbc.gridx = 4;
+        gbc.gridwidth = 4;
+        add(sendToBackButton, gbc);
+
+        // 빈 패널을 추가하여 남은 공간을 채워 상단 정렬
+        row++;
+        gbc.gridy = row;
+        gbc.gridx = 0;
+        gbc.gridwidth = 8;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
+        add(new JPanel(), gbc);
 
         DocumentListener listener = new DocumentListener() {
             @Override
