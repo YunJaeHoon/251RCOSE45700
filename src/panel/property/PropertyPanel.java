@@ -1,5 +1,6 @@
 package panel.property;
 
+import panel.canvas.CanvasPanel;
 import tool.Component;
 import tool.Properties;
 
@@ -7,6 +8,8 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 public class PropertyPanel extends JPanel {
@@ -18,6 +21,12 @@ public class PropertyPanel extends JPanel {
     private final JTextField greenField = new JTextField(3);
     private final JTextField blueField = new JTextField(3);
     private List<Component> selectedComponents;
+
+    private CanvasPanel canvasPanel;  // CanvasPanel 참조
+
+    // z-order 변경 버튼 (다중 선택 지원)
+    private final JButton bringToFrontButton = new JButton("맨 앞으로");
+    private final JButton sendToBackButton = new JButton("맨 뒤로");
 
     public PropertyPanel() {
         setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -35,6 +44,10 @@ public class PropertyPanel extends JPanel {
         add(greenField);
         add(new JLabel("B:"));
         add(blueField);
+
+        // z-order 버튼 추가
+        add(bringToFrontButton);
+        add(sendToBackButton);
 
         DocumentListener listener = new DocumentListener() {
             @Override
@@ -58,6 +71,31 @@ public class PropertyPanel extends JPanel {
         redField.getDocument().addDocumentListener(listener);
         greenField.getDocument().addDocumentListener(listener);
         blueField.getDocument().addDocumentListener(listener);
+
+        // 다중 선택된 컴포넌트에 대해 z-order 변경 수행
+        bringToFrontButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (selectedComponents != null && !selectedComponents.isEmpty() && canvasPanel != null) {
+                    canvasPanel.bringToFront(selectedComponents);
+                    canvasPanel.repaint();
+                }
+            }
+        });
+
+        sendToBackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (selectedComponents != null && !selectedComponents.isEmpty() && canvasPanel != null) {
+                    canvasPanel.sendToBack(selectedComponents);
+                    canvasPanel.repaint();
+                }
+            }
+        });
+    }
+
+    public void setCanvasPanel(CanvasPanel canvasPanel) {
+        this.canvasPanel = canvasPanel;
     }
 
     public void displayProperties(List<Component> components) {

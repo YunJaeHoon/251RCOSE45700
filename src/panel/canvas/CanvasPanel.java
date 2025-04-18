@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorSelectionListener, MouseListener, MouseMotionListener
 {
@@ -32,6 +33,8 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 
     public void setPropertyPanel(PropertyPanel propertyPanel) {
         this.propertyPanel = propertyPanel;
+        // PropertyPanel에 CanvasPanel 참조 전달
+        this.propertyPanel.setCanvasPanel(this);
     }
     // 생성자
     CanvasPanel()
@@ -49,6 +52,22 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
         // 현재 도구 레이블 설정
         currentToolLabel.setBounds(10, 10, 200, 20);
         this.add(currentToolLabel);
+    }
+
+    // 다중 선택된 컴포넌트를 모두 앞으로 이동 (단, 내부 순서 유지)
+    public void bringToFront(List<Component> comps) {
+        for (Component comp : comps) {
+            components.remove(comp);
+        }
+        components.addAll(comps);
+    }
+
+    // 다중 선택된 컴포넌트를 모두 뒤로 이동 (단, 내부 순서 유지)
+    public void sendToBack(List<Component> comps) {
+        for (Component comp : comps) {
+            components.remove(comp);
+        }
+        components.addAll(0, comps);
     }
 
     // 도구 선택 이벤트 처리 메서드
