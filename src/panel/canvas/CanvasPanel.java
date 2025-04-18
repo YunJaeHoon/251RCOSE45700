@@ -21,13 +21,14 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
     private Component currentComponent;         // 현재 대상 컴포넌트 객체
     private ToolMode currentToolMode;           // 현재 도구 모드
     private Color currentColor;                 // 현재 색상
-    private Component selectedComponent;    // 선택된 컴포넌트
+    // 여러 컴포넌트를 선택할 수 있도록 List 사용
+    private final ArrayList<Component> selectedComponents = new ArrayList<>();
 
     private final JLabel currentToolLabel = new JLabel();   // 현재 도구를 표시하는 레이블
     private PropertyPanel propertyPanel;  // 속성창 패널 참조
 
     // 이동 시 기준 좌표 오프셋
-    private Point dragOffset;
+    private final Point offset = new Point();
 
     public void setPropertyPanel(PropertyPanel propertyPanel) {
         this.propertyPanel = propertyPanel;
@@ -59,7 +60,7 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 
         // select 모드에서 다른 모드로 수정시
         if(selectedTool != ToolMode.SELECT) {
-            selectedComponent = null;
+            selectedComponents.clear();
             if(propertyPanel != null) {
                 propertyPanel.clearProperties();
             }
@@ -80,13 +81,15 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
         System.out.println(currentColor);
 
         // select 모드이고 선택된 컴포넌트가 있을 경우 색상 업데이트
-        if (currentToolMode == ToolMode.SELECT && selectedComponent != null) {
+        if (currentToolMode == ToolMode.SELECT && !selectedComponents.isEmpty()) {
             // 기존 속성값을 가져온 후 색상만 바꾸어 설정
-            Properties props = selectedComponent.getProperties();
-            selectedComponent.setProperties(props.getX(), props.getY(), props.getWidth(), props.getHeight(), color);
+            for (Component comp : selectedComponents) {
+                Properties props = comp.getProperties();
+                comp.setProperties(props.getX(), props.getY(), props.getWidth(), props.getHeight(), color);
+            }
             // 속성창에 변경된 색상 즉시 반영
             if (propertyPanel != null) {
-                propertyPanel.displayProperties(selectedComponent);
+                propertyPanel.displayProperties(selectedComponents);
             }
             repaint();
         }
@@ -98,25 +101,39 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
     {
         // 선택 도구일 때 기존 객체 대상으로 hit testing 실행
         if (currentToolMode == ToolMode.SELECT) {
+            // 클릭 위치 저장
+            offset.setLocation(e.getX(), e.getY());
+            // Ctrl 키가 눌렸는지 체크
+            boolean ctrlDown = (e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) != 0;
+            boolean found = false;
+            // 역순으로 hit test 수행
             for (int i = components.size() - 1; i >= 0; i--) {
                 Component comp = components.get(i);
                 if (comp.contains(e.getPoint())) {
-                    selectedComponent = comp;
-                    // 오프셋 계산 : 마우스 클릭 위치와 컴포넌트 좌측 상단의 차이
-                    Properties props = selectedComponent.getProperties();
-                    dragOffset = new Point(e.getX() - props.getX(), e.getY() - props.getY());
+                    found = true;
+                    // Ctrl 키가 없으면 단일 선택으로 처리
+                    if (!ctrlDown) {
+                        selectedComponents.clear();
+                    }
+                    if (!selectedComponents.contains(comp)) {
+                        selectedComponents.add(comp);
+                    }
+                    // 선택된 컴포넌트가 하나인지 여부와 상관없이 항상 속성창에 전달
                     if (propertyPanel != null) {
-                        propertyPanel.displayProperties(comp);
+                        propertyPanel.displayProperties(selectedComponents);
                     }
                     repaint();
-                    return;
+                    break;
                 }
             }
-            selectedComponent = null;
-            if (propertyPanel != null) {
-                propertyPanel.clearProperties();
+            // 아무것도 hit되지 않았을 경우 선택 초기화
+            if (!found) {
+                selectedComponents.clear();
+                if (propertyPanel != null) {
+                    propertyPanel.clearProperties();
+                }
+                repaint();
             }
-            repaint();
         } else {
             // 그리기 모드면 새 컴포넌트 생성
             currentComponent = currentToolMode.getComponentFactory().createComponent(e);
@@ -127,16 +144,23 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 
     // 마우스 버튼을 누른채로 드래그했을 때, 이벤트 처리 메서드
     @Override
-    public void mouseDragged(MouseEvent e)
-    {
-        if(currentToolMode == ToolMode.SELECT && selectedComponent != null && dragOffset != null) {
-            // 기존 크기, 색상을 유지하며 좌표만 업데이트
-            Properties props = selectedComponent.getProperties();
-            int newX = e.getX() - dragOffset.x;
-            int newY = e.getY() - dragOffset.y;
-            selectedComponent.setProperties(newX, newY, props.getWidth(), props.getHeight(), props.getColor());
-            if(propertyPanel != null) {
-                propertyPanel.displayProperties(selectedComponent);
+    public void mouseDragged(MouseEvent e) {
+        if (currentToolMode == ToolMode.SELECT && !selectedComponents.isEmpty()) {
+            // 각 선택된 컴포넌트에 대해 오프셋을 적용하여 이동
+            for (Component comp : selectedComponents) {
+                if (offset != null) {
+                    Properties props = comp.getProperties();
+                    int newX = e.getX() - offset.x + props.getX();
+                    int newY = e.getY() - offset.y + props.getY();
+                    comp.setProperties(newX, newY, props.getWidth(), props.getHeight(), props.getColor());
+                }
+            }
+            if (offset != null) {
+                offset.setLocation(e.getX(), e.getY());
+            }
+            // 단일 선택이면 속성창 업데이트
+            if (propertyPanel != null && selectedComponents.size() == 1) {
+                propertyPanel.displayProperties(selectedComponents);
             }
             repaint();
         } else if (currentToolMode != ToolMode.SELECT && currentComponent != null) {
@@ -149,9 +173,8 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
     @Override
     public void mouseReleased(MouseEvent e)
     {
-        if(currentToolMode == ToolMode.SELECT) {
-            dragOffset = null;
-        } else if(currentComponent != null) {
+        if (currentComponent != null)
+        {
             currentComponent.onMouseReleased(e);
             components.add(currentComponent);
             currentComponent = null;
@@ -173,10 +196,9 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
         if (currentComponent != null) {
             currentComponent.draw(g);
         }
-        // 선택된 객체의 외곽선 표시
-        if (selectedComponent != null) {
-            Rectangle bounds = selectedComponent.getBounds();
-            g.setColor(Color.BLACK);
+        g.setColor(Color.BLACK);
+        for (Component comp : selectedComponents) {
+            Rectangle bounds = comp.getBounds();
             g.drawRect(bounds.x - 2, bounds.y - 2, bounds.width + 4, bounds.height + 4);
         }
     }
