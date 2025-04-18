@@ -38,7 +38,7 @@ public class MainFrame extends JFrame
 
         // 속성 패널 생성
         propertyPanel = PropertyPanelFactory.getInstance().createPanel();
-        canvasPanel.setPropertiesPanel(propertyPanel);
+        canvasPanel.setPropertyPanel(propertyPanel);
 
         // 컨텐츠 펜에 패널 추가
         contentPane.add(new JScrollPane(canvasPanel), BorderLayout.CENTER);

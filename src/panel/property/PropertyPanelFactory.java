@@ -1,7 +1,6 @@
 package panel.property;
 
 import panel.PanelFactory;
-import panel.color.ColorPanel;
 
 public class PropertyPanelFactory implements PanelFactory
 {
