@@ -43,4 +43,31 @@ public class Rectangle implements Component
         g.setColor(color);
         g.fillRect(x, y, width, height);
     }
+
+    @Override
+    public java.awt.Rectangle getBounds() {
+        int x = Math.min(startX, endX);
+        int y = Math.min(startY, endY);
+        int width = Math.abs(endX - startX);
+        int height = Math.abs(endY - startY);
+        return new java.awt.Rectangle(x, y, width, height);
+    }
+
+    @Override
+    public Properties getProperties() {
+        int x = Math.min(startX, endX);
+        int y = Math.min(startY, endY);
+        int width = Math.abs(endX - startX);
+        int height = Math.abs(endY - startY);
+        return new Properties(x,y,width,height, this.color);
+    }
+
+    @Override
+    public void setProperties(int x, int y, int width, int height, Color color) {
+        startX = x;
+        startY = y;
+        endX = x + width;
+        endY = y + height;
+        this.color = color;
+    }
 }

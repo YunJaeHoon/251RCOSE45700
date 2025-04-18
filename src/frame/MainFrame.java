@@ -4,6 +4,8 @@ import panel.canvas.CanvasPanel;
 import panel.canvas.CanvasPanelFactory;
 import panel.color.ColorPanel;
 import panel.color.ColorPanelFactory;
+import panel.property.PropertyPanel;
+import panel.property.PropertyPanelFactory;
 import panel.toolbar.ToolbarPanelFactory;
 import panel.toolbar.ToolbarPanel;
 
@@ -15,6 +17,7 @@ public class MainFrame extends JFrame
     CanvasPanel canvasPanel;    // 캔버스 패널
     ToolbarPanel toolbarPanel;  // 도구 선택 패널
     ColorPanel colorPanel;      // 색상 선택 패널
+    PropertyPanel propertyPanel; // 속성 패널
 
     MainFrame()
     {
@@ -33,9 +36,15 @@ public class MainFrame extends JFrame
         colorPanel = ColorPanelFactory.getInstance().createPanel();
         colorPanel.addColorSelectionListener(canvasPanel);
 
+        // 속성 패널 생성
+        propertyPanel = PropertyPanelFactory.getInstance().createPanel();
+        canvasPanel.setPropertiesPanel(propertyPanel);
+
         // 컨텐츠 펜에 패널 추가
         contentPane.add(new JScrollPane(canvasPanel), BorderLayout.CENTER);
         contentPane.add(toolbarPanel, BorderLayout.WEST);
         contentPane.add(colorPanel, BorderLayout.SOUTH);
+        contentPane.add(propertyPanel, BorderLayout.EAST);
+
     }
 }

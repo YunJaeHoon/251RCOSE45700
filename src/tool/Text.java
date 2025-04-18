@@ -5,7 +5,7 @@ import panel.canvas.CanvasPanel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-
+// PropertyPanel에서 아직 구현 안됨
 public class Text extends JTextField implements Component
 {
     private int x, y;
@@ -46,5 +46,19 @@ public class Text extends JTextField implements Component
             int adjustedY = y + metrics.getAscent();
             g.drawString(getText(), x, adjustedY);
         }
+    }
+
+    @Override
+    public Properties getProperties() {
+//        int x = Math.min(startX, endX);
+//        int y = Math.min(startY, endY);
+//        int width = Math.abs(endX - startX);
+//        int height = Math.abs(endY - startY);
+//        return new Properties(x,y,width,height, this.color);
+        return null;
+    }
+
+    @Override
+    public void setProperties(int x, int y, int width, int height, Color color) {
     }
 }
