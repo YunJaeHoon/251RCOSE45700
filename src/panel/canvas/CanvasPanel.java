@@ -3,6 +3,7 @@ package panel.canvas;
 import panel.color.ColorSelectionListener;
 import panel.property.PropertyPanel;
 import tool.Component;
+import tool.Properties;
 import tool.Text;
 import tool.ToolMode;
 import panel.toolbar.ToolSelectionListener;
@@ -67,6 +68,18 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 
         currentColor = color;
         System.out.println(currentColor);
+
+        // select 모드이고 선택된 컴포넌트가 있을 경우 색상 업데이트
+        if (currentToolMode == ToolMode.SELECT && selectedComponent != null) {
+            // 기존 속성값을 가져온 후 색상만 바꾸어 설정
+            Properties props = selectedComponent.getProperties();
+            selectedComponent.setProperties(props.getX(), props.getY(), props.getWidth(), props.getHeight(), color);
+            // 속성창에 변경된 색상 즉시 반영
+            if (propertyPanel != null) {
+                propertyPanel.displayProperties(selectedComponent);
+            }
+            repaint();
+        }
     }
 
     // 마우스 버튼을 눌렀을 때, 이벤트 처리 메서드
