@@ -5,10 +5,8 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
-public class Ellipse implements Component {
-    private int startX, startY, endX, endY;
-    private Color color;
-
+public class Ellipse extends Component
+{
     @Override
     public void onMousePressed(MouseEvent e, Color color) {
         startX = e.getX();
@@ -31,40 +29,14 @@ public class Ellipse implements Component {
     }
 
     @Override
-    public void draw(Graphics g) {
-        int x = Math.min(startX, endX);
-        int y = Math.min(startY, endY);
-        int width = Math.abs(endX - startX);
-        int height = Math.abs(endY - startY);
-
+    public void draw(Graphics g)
+    {
         g.setColor(color);
-        g.fillOval(x, y, width, height);
-    }
-
-    @Override
-    public Rectangle getBounds() {
-        int x = Math.min(startX, endX);
-        int y = Math.min(startY, endY);
-        int width = Math.abs(endX - startX);
-        int height = Math.abs(endY - startY);
-        return new Rectangle(x, y, width, height);
-    }
-
-    @Override
-    public Properties getProperties() {
-        int x = Math.min(startX, endX);
-        int y = Math.min(startY, endY);
-        int width = Math.abs(endX - startX);
-        int height = Math.abs(endY - startY);
-        return new Properties(x,y,width,height,this.color);
-    }
-
-    @Override
-    public void setProperties(int x, int y, int width, int height, Color color) {
-        startX = x;
-        startY = y;
-        endX = x + width;
-        endY = y + height;
-        this.color = color;
+        g.fillOval(
+                Math.min(startX, endX),
+                Math.min(startY, endY),
+                Math.abs(endX - startX),
+                Math.abs(endY - startY)
+        );
     }
 }
