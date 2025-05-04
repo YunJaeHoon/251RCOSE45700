@@ -3,6 +3,7 @@ package panel.canvas;
 import panel.color.ColorSelectionListener;
 import panel.property.ChangeComponentPropertyListener;
 import tool.Component;
+import tool.Text;
 import tool.ToolMode;
 import panel.toolbar.ToolSelectionListener;
 
@@ -20,9 +21,9 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 	private final List<Component> selectedComponents = new ArrayList<>();		// 현재 선택한 컴포넌트 리스트
 	
 	private Component currentComponent;		// 현재 대상 컴포넌트 객체
-	private ToolMode currentToolMode;			// 현재 도구 모드
-	private final JLabel currentToolLabel;			// 현재 도구를 표시하는 레이블
-	private Color currentColor;						// 현재 색상
+	private ToolMode currentToolMode;		// 현재 도구 모드
+	private final JLabel currentToolLabel;	// 현재 도구를 표시하는 레이블
+	private Color currentColor;				// 현재 색상
 	
 	// 컴포넌트 선택 이벤트 리스너 리스트
 	private final List<ComponentSelectionListener> componentSelectionListeners = new ArrayList<>();
@@ -35,6 +36,9 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 	private Component resizingComponent = null;
 	private final int HANDLE_SIZE = 10;
 	private final Point resizeStartPoint = new Point();
+
+	// 이전에 만들어진 텍스트 컴포넌트
+	private Text activeTextComponent = null;
 	
 	// 생성자
 	CanvasPanel()
@@ -278,7 +282,7 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 				}
 			}
 			
-			// 아무것도 hit되지 않았을 경우 선택 초기화
+			// 아무것도 hit 되지 않았을 경우 선택 초기화
 			if (!found) {
 				selectedComponents.clear();
 				repaint();
@@ -287,6 +291,34 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 			// 그리기 모드면 새 컴포넌트 생성
 			currentComponent = currentToolMode.getComponentFactory().createComponent(e);
 			currentComponent.onMousePressed(e, currentColor);
+
+			if (currentComponent instanceof Text textComponent)
+			{
+				// 이전 텍스트 리스너 제거
+				if (activeTextComponent != null) {
+					removeKeyListener(activeTextComponent);
+					activeTextComponent.setActive(false);
+				}
+
+				// 새 텍스트 등록
+				requestFocusInWindow();
+				addKeyListener(textComponent);
+				activeTextComponent = textComponent;
+
+				components.add(textComponent);
+			}
+			else
+			{
+				// 텍스트가 아닌 경우 active 텍스트 비활성화 및 리스너 제거
+				if (activeTextComponent != null) {
+					removeKeyListener(activeTextComponent);
+					activeTextComponent.setActive(false);
+					activeTextComponent = null;
+				}
+
+				components.add(currentComponent);
+			}
+
 			repaint();
 		}
 	}
