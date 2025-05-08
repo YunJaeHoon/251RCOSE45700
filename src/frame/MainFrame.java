@@ -15,13 +15,22 @@ import java.awt.*;
 public class MainFrame extends JFrame
 {
 	CanvasPanel canvasPanel;        	// 캔버스 패널
-	ToolbarPanel toolbarPanel;		// 도구 선택 패널
+	ToolbarPanel toolbarPanel;			// 도구 선택 패널
 	ColorPanel colorPanel;              // 색상 선택 패널
 	PropertyPanel propertyPanel;		// 속성 패널
-	
+
+	// 싱글톤
+	public static MainFrame getInstance() { return MainFrame.SingleInstanceHolder.INSTANCE; }
+	private static class SingleInstanceHolder { private static final MainFrame INSTANCE = new MainFrame(); }
+
 	// 생성자
-	MainFrame()
+	private MainFrame()
 	{
+		// 기본 설정
+		setTitle("그림을 그려보아요!");
+		setSize(800, 600);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		// 컨텐츠 펜 설정
 		Container contentPane = this.getContentPane();
 		contentPane.setLayout(new BorderLayout());
