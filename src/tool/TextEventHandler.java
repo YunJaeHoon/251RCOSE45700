@@ -1,18 +1,20 @@
 package tool;
 
+import panel.canvas.CanvasPanel;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
 public class TextEventHandler implements ToolEventHandler
 {
     @Override
-    public void onMousePressed(MouseEvent e, Color color)
+    public void onMousePressed(CanvasPanel canvasPanel, MouseEvent e, Color color)
     {
 
     }
 
     @Override
-    public void onMouseDragged(MouseEvent e)
+    public void onMouseDragged(CanvasPanel canvasPanel, MouseEvent e)
     {
 
     }

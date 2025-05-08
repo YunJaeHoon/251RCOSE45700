@@ -8,10 +8,7 @@ public abstract class Component
 {
 	protected int startX, startY, endX, endY;
 	protected Color color;
-	
-	public abstract void onMousePressed(MouseEvent e, Color color);
-	public abstract void onMouseDragged(MouseEvent e);
-	public abstract void onMouseReleased(MouseEvent e);
+
 	public abstract void draw(Graphics g);
 	
 	public Rectangle getBounds()

@@ -19,8 +19,7 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 {
 	private final List<Component> components = new ArrayList<>();				// 지금까지 그려진 컴포넌트 리스트
 	private final List<Component> selectedComponents = new ArrayList<>();		// 현재 선택한 컴포넌트 리스트
-	
-	private Component currentComponent;		// 현재 대상 컴포넌트 객체
+
 	private ToolMode currentToolMode;		// 현재 도구 모드
 	private final JLabel currentToolLabel;	// 현재 도구를 표시하는 레이블
 	private Color currentColor;				// 현재 색상
@@ -28,17 +27,10 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 	// 컴포넌트 선택 이벤트 리스너 리스트
 	private final List<ComponentSelectionListener> componentSelectionListeners = new ArrayList<>();
 	
-	// 이동 시 기준 좌표 오프셋
-	private final Point offset = new Point();
-	
 	// 추가된 크기 조절 관련 필드
-	private boolean isResizing = false;
-	private Component resizingComponent = null;
-	private final int HANDLE_SIZE = 10;
-	private final Point resizeStartPoint = new Point();
 
-	// 이전에 만들어진 텍스트 컴포넌트
-	private Text activeTextComponent = null;
+
+	private final int HANDLE_SIZE = 10;
 	
 	// 생성자
 	public CanvasPanel()
@@ -57,6 +49,16 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 		currentToolLabel = new JLabel();
 		currentToolLabel.setBounds(10, 10, 200, 20);
 		add(currentToolLabel);
+	}
+
+	// 컴포넌트 리스트 얻기
+	public List<Component> getComponentList() {
+		return components;
+	}
+
+	// 선택된 컴포넌트 리스트 얻기
+	public List<Component> getSelectedComponentList() {
+		return selectedComponents;
 	}
 	
 	// 컴포넌트 선택 이벤트 리스너 추가 메서드
@@ -211,153 +213,25 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
-		// 선택 도구일 때 기존 객체 대상으로 hit testing 실행
-		if (currentToolMode == ToolMode.SELECT)
-		{
-			// 클릭 위치 저장
-			offset.setLocation(e.getX(), e.getY());
-			
-			// Ctrl 키를 눌렸는지 여부
-			boolean ctrlDown = (e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) != 0;
-			
-			// 클릭한 곳에 컴포넌트가 존재했는지 여부
-			boolean found = false;
-			
-			// 먼저, 현재 하나의 컴포넌트가 선택되었고, 크기 조절 핸들러를 눌렀는지 확인
-			if (selectedComponents.size() == 1)
-			{
-				Component component = selectedComponents.getFirst();
-				
-				Rectangle bounds = component.getBounds();
-				Rectangle resizeHandle = new Rectangle(
-						bounds.x + bounds.width,
-						bounds.y + bounds.height,
-						HANDLE_SIZE,
-						HANDLE_SIZE
-				);
-				
-				if (resizeHandle.contains(e.getPoint())) {
-					isResizing = true;
-					resizingComponent = component;
-					resizeStartPoint.setLocation(e.getX(), e.getY());
-					
-					found = true;
-				}
-			}
-			
-			// 크기 조절 핸들러를 누른 것이 아니라면, 가장 위의 컴포넌트부터 hit test 수행
-			if(!found)
-			{
-				for (int i = components.size() - 1; i >= 0; i--)
-				{
-					Component component = components.get(i);
-					
-					if (component.contains(e.getPoint()))
-					{
-						found = true;
-						
-						// 이미 선택한 컴포넌트일 경우 아무 처리도 하지 않고 종료
-						if(selectedComponents.contains(component))
-							break;
-						
-						// Ctrl 키가 눌리지 않았으면 단일 선택으로 처리
-						if (!ctrlDown) {
-							selectedComponents.clear();
-						}
-						
-						// 이미 선택된 컴포넌트가 아니라면 선택
-						if (!selectedComponents.contains(component)) {
-							selectedComponents.add(component);
-							notifyDisplayProperty();
-						}
-						
-						repaint();
-						break;
-					}
-				}
-			}
-			
-			// 아무것도 hit 되지 않았을 경우 선택 초기화
-			if (!found) {
-				selectedComponents.clear();
-				repaint();
-			}
-		} else {
-			// 그리기 모드면 새 컴포넌트 생성
-			currentComponent = currentToolMode.getComponentFactory().createComponent(e);
-			currentComponent.onMousePressed(e, currentColor);
-			components.add(currentComponent);
-
-			repaint();
-		}
+		// 그리기 모드면 새 컴포넌트 생성
+		currentToolMode.getToolEventHandler().onMousePressed(this, e, currentColor);
+		repaint();
 	}
 	
 	// 마우스 버튼을 누른채로 드래그했을 때, 이벤트 처리 메서드
 	@Override
 	public void mouseDragged(MouseEvent e)
 	{
-		if (currentToolMode == ToolMode.SELECT)
-		{
-			// 컴포넌트 크기 변경
-			if (isResizing && resizingComponent != null)
-			{
-				int newWidth = Math.max(10, resizingComponent.getWidth() + (e.getX() - resizeStartPoint.x));
-				int newHeight = Math.max(10, resizingComponent.getHeight() + (e.getY() - resizeStartPoint.y));
-				
-				resizingComponent.setWidth(newWidth);
-				resizingComponent.setHeight(newHeight);
-				
-				resizeStartPoint.setLocation(e.getX(), e.getY());
-				notifyDisplayProperty();
-				
-				repaint();
-			}
-			// 컴포넌트 위치 변경
-			else if (!selectedComponents.isEmpty()) {
-				for (Component component : selectedComponents)
-				{
-					if (offset != null) {
-						int newStartX = component.getStartX() + e.getX() - offset.x;
-						int newStartY = component.getStartY() + e.getY() - offset.y;
-						int newEndX = component.getEndX() + e.getX() - offset.x;
-						int newEndY = component.getEndY() + e.getY() - offset.y;
-						
-						component.setStartX(newStartX);
-						component.setStartY(newStartY);
-						component.setEndX(newEndX);
-						component.setEndY(newEndY);
-					}
-				}
-				
-				if (offset != null) {
-					offset.setLocation(e.getX(), e.getY());
-				}
-				
-				notifyDisplayProperty();
-				repaint();
-			}
-		}
-		else {
-			currentComponent.onMouseDragged(e);
-			repaint();
-		}
+		currentToolMode.getToolEventHandler().onMouseDragged(this, e);
+		repaint();
 	}
 	
 	// 마우스 버튼에서 손을 뗐을 때, 이벤트 처리 메서드
 	@Override
 	public void mouseReleased(MouseEvent e)
 	{
-		if (isResizing) {
-			isResizing = false;
-			resizingComponent = null;
-		}
-		if (currentComponent != null)
-		{
-			currentComponent.onMouseReleased(e);
-			components.add(currentComponent);
-			currentComponent = null;
-			repaint();
-		}
+		currentToolMode.getToolEventHandler().onMouseReleased(e);
+		repaint();
 	}
 	
 	@Override
@@ -365,14 +239,9 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 	{
 		super.paintComponent(g);
 		
-		// 완료된 컴포넌트들 먼저 그림
+		// 모든 컴포넌트 그리기
 		for (Component component : components) {
 			component.draw(g);
-		}
-		
-		// 현재 그리는 중인 컴포넌트도 그림
-		if (currentComponent != null) {
-			currentComponent.draw(g);
 		}
 		
 		g.setColor(Color.BLACK);

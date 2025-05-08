@@ -4,19 +4,19 @@ import component.*;
 
 public enum ToolMode
 {
-    SELECT(SelectFactory.getInstance()),
-    LINE(LineFactory.getInstance()),
-    RECTANGLE(RectangleFactory.getInstance()),
-    ELLIPSE(EllipseFactory.getInstance()),
-    TEXT(TextFactory.getInstance()),;
+    SELECT(new SelectEventHandler()),
+    LINE(new LineEventHandler()),
+    RECTANGLE(new RectangleEventHandler()),
+    ELLIPSE(new EllipseEventHandler()),
+    TEXT(new TextEventHandler()),;
 
-    public final ComponentFactory componentFactory;
+    public final ToolEventHandler toolEventHandler;
 
-    ToolMode(ComponentFactory componentFactory) {
-        this.componentFactory = componentFactory;
+    ToolMode(ToolEventHandler toolEventHandler) {
+        this.toolEventHandler = toolEventHandler;
     }
 
-    public ComponentFactory getComponentFactory() {
-        return componentFactory;
+    public ToolEventHandler getToolEventHandler() {
+        return toolEventHandler;
     }
 }
