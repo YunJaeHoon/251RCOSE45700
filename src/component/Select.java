@@ -1,7 +1,6 @@
-package tool;
+package component;
 
 import java.awt.*;
-import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
 public class Select extends Component

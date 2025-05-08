@@ -1,6 +1,6 @@
 package panel.canvas;
 
-import tool.Component;
+import component.Component;
 
 import java.util.EventListener;
 import java.util.List;

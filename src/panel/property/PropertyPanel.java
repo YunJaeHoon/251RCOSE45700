@@ -2,7 +2,7 @@ package panel.property;
 
 import panel.canvas.ComponentSelectionListener;
 import panel.color.ColorSelectionListener;
-import tool.Component;
+import component.Component;
 
 import javax.swing.*;
 import java.awt.*;

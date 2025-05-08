@@ -1,10 +1,6 @@
-package tool;
+package component;
 
-import panel.canvas.CanvasPanel;
-
-import javax.swing.*;
 import java.awt.*;
-import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;

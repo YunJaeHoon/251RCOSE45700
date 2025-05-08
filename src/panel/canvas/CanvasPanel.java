@@ -2,8 +2,8 @@ package panel.canvas;
 
 import panel.color.ColorSelectionListener;
 import panel.property.ChangeComponentPropertyListener;
-import tool.Component;
-import tool.Text;
+import component.Component;
+import component.Text;
 import tool.ToolMode;
 import panel.toolbar.ToolSelectionListener;
 

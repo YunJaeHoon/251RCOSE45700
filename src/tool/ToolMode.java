@@ -1,5 +1,7 @@
 package tool;
 
+import component.*;
+
 public enum ToolMode
 {
     SELECT(SelectFactory.getInstance()),

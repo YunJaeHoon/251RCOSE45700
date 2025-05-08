@@ -1,4 +1,4 @@
-package tool;
+package component;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
