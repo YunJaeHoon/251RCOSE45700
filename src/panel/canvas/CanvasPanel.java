@@ -41,7 +41,7 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 	private Text activeTextComponent = null;
 	
 	// 생성자
-	CanvasPanel()
+	public CanvasPanel()
 	{
 		// 수동 배치 사용
 		setLayout(null);

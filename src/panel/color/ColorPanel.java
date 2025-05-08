@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ColorPanel  extends JPanel
+public class ColorPanel extends JPanel
 {
 	private Color currentColor = Color.BLACK;                   			// 현재 색깔
 	private final ButtonGroup buttonGroup = new ButtonGroup();  	// 색상 단일 선택을 위한 버튼 그룹
@@ -21,7 +21,7 @@ public class ColorPanel  extends JPanel
 	private final List<ColorSelectionListener> colorSelectionListeners = new ArrayList<>();
 	
 	// 생성자
-	ColorPanel()
+	public ColorPanel()
 	{
 		setLayout(new FlowLayout());
 		
@@ -98,12 +98,7 @@ public class ColorPanel  extends JPanel
 		colorSelectionListeners.add(listener);
 		listener.colorSelected(currentColor);
 	}
-	
-	// 색상 선택 이벤트 리스너 제거 메서드
-	public void removeColorSelectionListener(ColorSelectionListener listener) {
-		colorSelectionListeners.remove(listener);
-	}
-	
+
 	// 등록된 모든 리스너에게 색상 선택 이벤트 알림
 	private void notifyColorSelection(Color selectedColor) {
 		for (ColorSelectionListener listener : colorSelectionListeners) {

@@ -18,7 +18,7 @@ public class ToolbarPanel extends JPanel
 	private final List<ToolSelectionListener> toolSelectionListeners = new ArrayList<>();
 	
 	// 생성자
-	ToolbarPanel()
+	public ToolbarPanel()
 	{
 		// 객체 생성
 		super(new BorderLayout());

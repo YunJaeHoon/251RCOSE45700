@@ -1,12 +1,8 @@
 package frame;
 
 import panel.canvas.CanvasPanel;
-import panel.canvas.CanvasPanelFactory;
 import panel.color.ColorPanel;
-import panel.color.ColorPanelFactory;
 import panel.property.PropertyPanel;
-import panel.property.PropertyPanelFactory;
-import panel.toolbar.ToolbarPanelFactory;
 import panel.toolbar.ToolbarPanel;
 
 import javax.swing.*;
@@ -38,18 +34,11 @@ public class MainFrame extends JFrame
 		contentPane.setLayout(new BorderLayout());
 
 		/// 패널 생성
-		
-		// 캔버스 패널
-		canvasPanel = CanvasPanelFactory.getInstance().createPanel();
-		
-		// 속성 패널
-		propertyPanel = PropertyPanelFactory.getInstance().createPanel();
 
-		// 툴바 패널
-		toolbarPanel = ToolbarPanelFactory.getInstance().createPanel();
-
-		// 컬러 패널
-		colorPanel = ColorPanelFactory.getInstance().createPanel();
+		canvasPanel = new CanvasPanel();		// 캔버스 패널
+		propertyPanel = new PropertyPanel();	// 속성 패널
+		toolbarPanel = new ToolbarPanel();		// 툴바 패널
+		colorPanel = new ColorPanel();			// 컬러 패널
 
 		/// 이벤트 리스너 등록
 

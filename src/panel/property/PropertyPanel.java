@@ -26,7 +26,7 @@ public class PropertyPanel extends JPanel implements ComponentSelectionListener,
 	private final List<ChangeComponentPropertyListener> changeComponentPropertyListeners = new ArrayList<>();
 	
 	// 생성자
-	PropertyPanel()
+	public PropertyPanel()
 	{
 		setLayout(new GridBagLayout());
 		
