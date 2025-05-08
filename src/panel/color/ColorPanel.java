@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ColorPanel extends JPanel
 {
-	private Color currentColor = Color.BLACK;                   			// 현재 색깔
+	private Color currentColor = Color.BLACK;                   	// 현재 색깔
 	private final ButtonGroup buttonGroup = new ButtonGroup();  	// 색상 단일 선택을 위한 버튼 그룹
 	
 	// 색상 선택 이벤트 리스너 리스트

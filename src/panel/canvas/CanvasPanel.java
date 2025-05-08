@@ -65,11 +65,6 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 		listener.selectComponents(selectedComponents);
 	}
 	
-	// 컴포넌트 선택 이벤트 리스너 제거 메서드
-	public void removeComponentSelectionListener(ComponentSelectionListener listener) {
-		componentSelectionListeners.remove(listener);
-	}
-	
 	// 등록된 모든 리스너에게 컴포넌트 속성 출력 이벤트 알림
 	public void notifyDisplayProperty() {
 		for(ComponentSelectionListener listener : componentSelectionListeners) {
@@ -291,33 +286,7 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 			// 그리기 모드면 새 컴포넌트 생성
 			currentComponent = currentToolMode.getComponentFactory().createComponent(e);
 			currentComponent.onMousePressed(e, currentColor);
-
-			if (currentComponent instanceof Text textComponent)
-			{
-				// 이전 텍스트 리스너 제거
-				if (activeTextComponent != null) {
-					removeKeyListener(activeTextComponent);
-					activeTextComponent.setActive(false);
-				}
-
-				// 새 텍스트 등록
-				requestFocusInWindow();
-				addKeyListener(textComponent);
-				activeTextComponent = textComponent;
-
-				components.add(textComponent);
-			}
-			else
-			{
-				// 텍스트가 아닌 경우 active 텍스트 비활성화 및 리스너 제거
-				if (activeTextComponent != null) {
-					removeKeyListener(activeTextComponent);
-					activeTextComponent.setActive(false);
-					activeTextComponent = null;
-				}
-
-				components.add(currentComponent);
-			}
+			components.add(currentComponent);
 
 			repaint();
 		}

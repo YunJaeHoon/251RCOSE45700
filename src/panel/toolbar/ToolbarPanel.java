@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ToolbarPanel extends JPanel
 {
-	private ToolMode currentToolMode = ToolMode.SELECT;				// 현재 도구 모드
+	private ToolMode currentToolMode = ToolMode.SELECT;						// 현재 도구 모드
 	private final JToolBar toolBar = new JToolBar(JToolBar.VERTICAL);   	// 도구 선택창
 	private final ButtonGroup buttonGroup = new ButtonGroup();          	// 도구 단일 선택을 위한 버튼 그룹
 	
