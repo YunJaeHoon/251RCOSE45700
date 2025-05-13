@@ -18,6 +18,7 @@ public class TextEventHandler implements ToolEventHandler
         text.setEndX(e.getX());
         text.setEndY(e.getY());
         text.setColor(color);
+        text.setDragging(true);
 
         canvasPanel.getComponentList().add(text);
     }
@@ -34,6 +35,7 @@ public class TextEventHandler implements ToolEventHandler
     {
         text.setEndX(e.getX());
         text.setEndY(e.getY());
+        text.setDragging(false);
         text.enableEditing(canvasPanel);
     }
 }

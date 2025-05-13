@@ -8,16 +8,29 @@ import java.awt.event.*;
 public class Text extends Component
 {
 	private String textContent = "";
-
-	public String getTextContent() {
-		return textContent;
-	}
+	private boolean dragging = false;
 
 	public void setTextContent(String textContent) {
 		this.textContent = textContent;
 	}
+
+	public void setDragging(boolean dragging) {
+		this.dragging = dragging;
+	}
+
 	@Override
 	public void draw(Graphics g) {
+		if (dragging) {
+			// 영역의 좌표 및 크기 계산
+			int x = Math.min(startX, endX);
+			int y = Math.min(startY, endY);
+			int width = Math.abs(endX - startX);
+			int height = Math.abs(endY - startY);
+
+			g.setColor(Color.GRAY);
+			g.drawRect(x, y, width, height);
+			return;
+		}
 		g.setColor(color);
 		FontMetrics fm = g.getFontMetrics();
 		int x = Math.min(startX, endX);
