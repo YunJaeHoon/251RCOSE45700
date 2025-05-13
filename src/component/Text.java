@@ -67,6 +67,7 @@ public class Text extends Component
 	}
 
 	// 텍스트 컴포넌트 자체에서 편집 기능을 제공하는 메서드
+	@Override
 	public void enableEditing(final JPanel parent) {
 		Rectangle bounds = getBounds();
 		final JTextArea editor = new JTextArea(textContent);
@@ -85,7 +86,6 @@ public class Text extends Component
 			public void focusLost(FocusEvent e) {
 				setTextContent(editor.getText());
 				parent.remove(editor);
-				parent.repaint();
 			}
 		});
 	}

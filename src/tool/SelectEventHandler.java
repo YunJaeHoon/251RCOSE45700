@@ -59,6 +59,12 @@ public class SelectEventHandler implements ToolEventHandler
 
                 found = true;
             }
+
+            if (component.contains(e.getPoint())) {
+                component.enableEditing(canvasPanel);
+                selectedComponents.clear();
+                found = true;
+            }
         }
 
         // 크기 조절 핸들러를 누른 것이 아니라면, 가장 위의 컴포넌트부터 hit test 수행

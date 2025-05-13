@@ -1,7 +1,7 @@
 package component;
 
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
 import java.awt.Rectangle;
 
 public abstract class Component
@@ -98,4 +98,8 @@ public abstract class Component
 	public void setBlueCode(int blueCode) {
 		color = new Color(color.getRed(), color.getGreen(), blueCode);
 	}
+
+    public void enableEditing(JPanel parent) {
+		// 결합도 하락을 위한 메소드 추가
+    }
 }

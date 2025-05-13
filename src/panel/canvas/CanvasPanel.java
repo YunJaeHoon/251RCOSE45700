@@ -36,7 +36,11 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 	{
 		// 수동 배치 사용
 		setLayout(null);
-		
+
+		// 캔버스 패널을 포커스 가능하도록 설정
+		setFocusable(true);
+		requestFocusInWindow();
+
 		// 마우스 이벤트 리스너 등록
 		addMouseListener(this);
 		addMouseMotionListener(this);
@@ -212,6 +216,8 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
+		// 캔버스 영역 클릭 시 포커스를 캔버스 패널로 이동하여 JTextArea가 focusLost 이벤트를 발생하게 함
+		requestFocusInWindow();
 		// 그리기 모드면 새 컴포넌트 생성
 		currentToolMode.getToolEventHandler().onMousePressed(this, e, currentColor);
 		repaint();
