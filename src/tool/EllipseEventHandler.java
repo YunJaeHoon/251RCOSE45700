@@ -35,7 +35,7 @@ public class EllipseEventHandler implements ToolEventHandler
     }
 
     @Override
-    public void onMouseReleased(MouseEvent e)
+    public void onMouseReleased(CanvasPanel canvasPanel, MouseEvent e)
     {
         ellipse.setEndX(e.getX());
         ellipse.setEndY(e.getY());

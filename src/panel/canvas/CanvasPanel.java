@@ -3,7 +3,6 @@ package panel.canvas;
 import panel.color.ColorSelectionListener;
 import panel.property.ChangeComponentPropertyListener;
 import component.Component;
-import component.Text;
 import tool.ToolMode;
 import panel.toolbar.ToolSelectionListener;
 
@@ -230,7 +229,7 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 	@Override
 	public void mouseReleased(MouseEvent e)
 	{
-		currentToolMode.getToolEventHandler().onMouseReleased(e);
+		currentToolMode.getToolEventHandler().onMouseReleased(this, e);
 		repaint();
 	}
 	

@@ -151,7 +151,7 @@ public class SelectEventHandler implements ToolEventHandler
     }
 
     @Override
-    public void onMouseReleased(MouseEvent e)
+    public void onMouseReleased(CanvasPanel canvasPanel, MouseEvent e)
     {
         if (isResizing) {
             isResizing = false;

@@ -1,6 +1,5 @@
 package tool;
 
-import component.Ellipse;
 import component.Rectangle;
 import panel.canvas.CanvasPanel;
 
@@ -36,7 +35,7 @@ public class RectangleEventHandler implements ToolEventHandler
     }
 
     @Override
-    public void onMouseReleased(MouseEvent e)
+    public void onMouseReleased(CanvasPanel canvasPanel, MouseEvent e)
     {
         rectangle.setEndX(e.getX());
         rectangle.setEndY(e.getY());

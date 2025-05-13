@@ -1,7 +1,6 @@
 package tool;
 
 import component.Line;
-import component.Rectangle;
 import panel.canvas.CanvasPanel;
 
 import java.awt.*;
@@ -36,7 +35,7 @@ public class LineEventHandler implements ToolEventHandler
     }
 
     @Override
-    public void onMouseReleased(MouseEvent e)
+    public void onMouseReleased(CanvasPanel canvasPanel, MouseEvent e)
     {
         line.setEndX(e.getX());
         line.setEndY(e.getY());

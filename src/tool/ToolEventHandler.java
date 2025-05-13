@@ -9,5 +9,5 @@ public interface ToolEventHandler
 {
     void onMousePressed(CanvasPanel canvasPanel, MouseEvent e, Color color);
     void onMouseDragged(CanvasPanel canvasPanel, MouseEvent e);
-    void onMouseReleased(MouseEvent e);
+    void onMouseReleased(CanvasPanel canvasPanel, MouseEvent e);
 }
