@@ -222,8 +222,6 @@ public class PropertyPanel extends JPanel implements ComponentSelectionListener,
 	@Override
 	public void selectComponents(List<Component> components) {
 		selectedComponents = components;
-		displayProperty();
-		System.out.println(selectedComponents);
 	}
 	
 	// 속성 출력
