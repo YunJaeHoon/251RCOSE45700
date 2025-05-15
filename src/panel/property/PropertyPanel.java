@@ -218,11 +218,6 @@ public class PropertyPanel extends JPanel implements ComponentSelectionListener,
 		changeComponentPropertyListeners.add(listener);
 	}
 	
-	// 컴포넌트 속성 변경 이벤트 리스너 제거 메서드
-	public void removeChangeComponentPropertyListener(ChangeComponentPropertyListener listener) {
-		changeComponentPropertyListeners.remove(listener);
-	}
-	
 	// 선택한 컴포넌트 리스트 설정
 	@Override
 	public void selectComponents(List<Component> components) {

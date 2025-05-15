@@ -33,14 +33,8 @@ public class Text extends Component
 	{
 		if (dragging)
 		{
-			// 영역의 좌표 및 크기 계산
-			int x = Math.min(startX, endX);
-			int y = Math.min(startY, endY);
-			int width = Math.abs(endX - startX);
-			int height = Math.abs(endY - startY);
-
 			g.setColor(Color.GRAY);
-			g.drawRect(x, y, width, height);
+			g.drawRect(Math.min(startX, endX), Math.min(startY, endY), getWidth(), getHeight());
 			return;
 		}
 
@@ -100,6 +94,7 @@ public class Text extends Component
 		editor.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
 		editor.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		editor.setMargin(new Insets(0, 0, 0, 0));
+		editor.setForeground(color);
 
 		parent.add(editor);
 		editor.requestFocusInWindow();

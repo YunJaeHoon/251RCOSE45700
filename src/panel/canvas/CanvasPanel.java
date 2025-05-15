@@ -26,11 +26,6 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 	// 컴포넌트 선택 이벤트 리스너 리스트
 	private final List<ComponentSelectionListener> componentSelectionListeners = new ArrayList<>();
 	
-	// 추가된 크기 조절 관련 필드
-
-
-	private final int HANDLE_SIZE = 10;
-	
 	// 생성자
 	public CanvasPanel()
 	{
@@ -257,7 +252,7 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 			g.drawRect(bounds.x - 2, bounds.y - 2, bounds.width + 4, bounds.height + 4);
 
 			// 크기 조절 핸들 표시
-			g.fillRect(bounds.x + bounds.width, bounds.y + bounds.height, HANDLE_SIZE, HANDLE_SIZE);
+			g.fillRect(bounds.x + bounds.width, bounds.y + bounds.height, 10, 10);
 		}
 	}
 	

@@ -1,5 +1,6 @@
 package tool;
 
+import component.Rectangle;
 import component.Text;
 import panel.canvas.CanvasPanel;
 
@@ -15,6 +16,7 @@ public class TextEventHandler implements ToolEventHandler
     {
         this.text = new Text();
 
+        // 텍스트 필드 변수 설정
         text.setStartX(e.getX());
         text.setStartY(e.getY());
         text.setEndX(e.getX());
