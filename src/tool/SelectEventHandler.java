@@ -33,7 +33,7 @@ public class SelectEventHandler implements ToolEventHandler
         // 선택된 컴포넌트 리스트
         List<Component> selectedComponents = canvasPanel.getSelectedComponentList();
 
-        // 먼저, 현재 하나의 컴포넌트가 선택되었고, 크기 조절 버튼을 눌렀는지 확인
+        // 먼저, 현재 하나의 컴포넌트가 선택된 상태이고, 크기 조절 버튼을 눌렀는지 확인
         if (selectedComponents.size() == 1)
         {
             // 선택된 컴포넌트
@@ -59,12 +59,6 @@ public class SelectEventHandler implements ToolEventHandler
 
                 found = true;
             }
-
-            if (component.contains(e.getPoint())) {
-                component.enableEditing(canvasPanel);
-                selectedComponents.clear();
-                found = true;
-            }
         }
 
         // 크기 조절 핸들러를 누른 것이 아니라면, 가장 위의 컴포넌트부터 hit test 수행
@@ -77,7 +71,7 @@ public class SelectEventHandler implements ToolEventHandler
             {
                 Component component = components.get(i);
 
-                if (component.contains(e.getPoint()))
+                if(component.contains(e.getPoint()))
                 {
                     found = true;
 
@@ -91,8 +85,11 @@ public class SelectEventHandler implements ToolEventHandler
                     }
 
                     // 이미 선택된 컴포넌트가 아니라면 선택
-                    if (!selectedComponents.contains(component)) {
+                    if (!selectedComponents.contains(component))
+                    {
                         selectedComponents.add(component);
+                        component.enableEditing(canvasPanel);
+
                         canvasPanel.notifyDisplayProperty();
                     }
 
@@ -139,10 +136,7 @@ public class SelectEventHandler implements ToolEventHandler
                     int newEndX = component.getEndX() + e.getX() - x;
                     int newEndY = component.getEndY() + e.getY() - y;
 
-                    component.setStartX(newStartX);
-                    component.setStartY(newStartY);
-                    component.setEndX(newEndX);
-                    component.setEndY(newEndY);
+                    component.resize(newStartX, newStartY, newEndX, newEndY);
                 }
             }
 

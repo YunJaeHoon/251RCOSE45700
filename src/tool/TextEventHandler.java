@@ -9,10 +9,12 @@ import java.awt.event.MouseEvent;
 public class TextEventHandler implements ToolEventHandler
 {
     private Text text;
+
     @Override
     public void onMousePressed(CanvasPanel canvasPanel, MouseEvent e, Color color)
     {
         this.text = new Text();
+
         text.setStartX(e.getX());
         text.setStartY(e.getY());
         text.setEndX(e.getX());

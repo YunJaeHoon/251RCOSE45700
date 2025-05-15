@@ -68,6 +68,14 @@ public abstract class Component
 	public void setEndY(int y) {
 		endY = y;
 	}
+
+	public void resize(int x1, int y1, int x2, int y2)
+	{
+		startX = x1;
+		startY = y1;
+		endX = x2;
+		endY = y2;
+	}
 	
 	public void setWidth(int width) {
 		if(startX >= endX)

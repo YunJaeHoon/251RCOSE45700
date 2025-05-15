@@ -218,7 +218,8 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 	{
 		// 캔버스 영역 클릭 시 포커스를 캔버스 패널로 이동하여 JTextArea가 focusLost 이벤트를 발생하게 함
 		requestFocusInWindow();
-		// 그리기 모드면 새 컴포넌트 생성
+
+		// 모드에 따른 동작 수행
 		currentToolMode.getToolEventHandler().onMousePressed(this, e, currentColor);
 		repaint();
 	}
@@ -254,9 +255,9 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 		for (Component comp : selectedComponents) {
 			Rectangle bounds = comp.getBounds();
 			g.drawRect(bounds.x - 2, bounds.y - 2, bounds.width + 4, bounds.height + 4);
-			// 크기 조절 핸들을 그려서 표시
+
+			// 크기 조절 핸들 표시
 			g.fillRect(bounds.x + bounds.width, bounds.y + bounds.height, HANDLE_SIZE, HANDLE_SIZE);
-			
 		}
 	}
 	
