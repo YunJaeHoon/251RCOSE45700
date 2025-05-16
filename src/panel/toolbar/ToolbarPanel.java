@@ -1,5 +1,6 @@
 package panel.toolbar;
 
+import panel.property.PropertyPanel;
 import tool.ToolMode;
 
 import javax.swing.*;
@@ -16,9 +17,13 @@ public class ToolbarPanel extends JPanel
 	
 	// 도구 선택 이벤트 리스너 리스트
 	private final List<ToolSelectionListener> toolSelectionListeners = new ArrayList<>();
-	
+
+	// 싱글톤
+	public static ToolbarPanel getInstance() { return ToolbarPanel.SingleInstanceHolder.INSTANCE; }
+	private static class SingleInstanceHolder { private static final ToolbarPanel INSTANCE = new ToolbarPanel(); }
+
 	// 생성자
-	public ToolbarPanel()
+	private ToolbarPanel()
 	{
 		// 객체 생성
 		super(new BorderLayout());

@@ -10,6 +10,11 @@ public class LineEventHandler implements ToolEventHandler
 {
     private Line line;
 
+    // 싱글톤
+    public static LineEventHandler getInstance() { return LineEventHandler.SingleInstanceHolder.INSTANCE; }
+    private static class SingleInstanceHolder { private static final LineEventHandler INSTANCE = new LineEventHandler(); }
+    private LineEventHandler() {}
+
     @Override
     public void onMousePressed(CanvasPanel canvasPanel, MouseEvent e, Color color)
     {

@@ -17,6 +17,11 @@ public class SelectEventHandler implements ToolEventHandler
     private Integer resizingStartX;         // 크기 조절을 시작한 X 좌표
     private Integer resizingStartY;         // 크기 조절을 시작한 Y 좌표
 
+    // 싱글톤
+    public static SelectEventHandler getInstance() { return SelectEventHandler.SingleInstanceHolder.INSTANCE; }
+    private static class SingleInstanceHolder { private static final SelectEventHandler INSTANCE = new SelectEventHandler(); }
+    private SelectEventHandler() {}
+
     @Override
     public void onMousePressed(CanvasPanel canvasPanel, MouseEvent e, Color color)
     {

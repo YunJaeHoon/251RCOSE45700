@@ -35,10 +35,10 @@ public class MainFrame extends JFrame
 
 		/// 패널 생성
 
-		canvasPanel = new CanvasPanel();		// 캔버스 패널
-		propertyPanel = new PropertyPanel();	// 속성 패널
-		toolbarPanel = new ToolbarPanel();		// 툴바 패널
-		colorPanel = new ColorPanel();			// 컬러 패널
+		canvasPanel = CanvasPanel.getInstance();		// 캔버스 패널
+		propertyPanel = PropertyPanel.getInstance();	// 속성 패널
+		toolbarPanel = ToolbarPanel.getInstance();		// 툴바 패널
+		colorPanel = ColorPanel.getInstance();			// 컬러 패널
 
 		/// 이벤트 리스너 등록
 

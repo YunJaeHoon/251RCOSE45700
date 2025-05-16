@@ -4,11 +4,11 @@ import component.*;
 
 public enum ToolMode
 {
-    SELECT(new SelectEventHandler()),
-    LINE(new LineEventHandler()),
-    RECTANGLE(new RectangleEventHandler()),
-    ELLIPSE(new EllipseEventHandler()),
-    TEXT(new TextEventHandler()),;
+    SELECT(SelectEventHandler.getInstance()),
+    LINE(LineEventHandler.getInstance()),
+    RECTANGLE(RectangleEventHandler.getInstance()),
+    ELLIPSE(EllipseEventHandler.getInstance()),
+    TEXT(TextEventHandler.getInstance());
 
     public final ToolEventHandler toolEventHandler;
 

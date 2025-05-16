@@ -1,6 +1,7 @@
 package panel.property;
 
 import panel.canvas.ComponentSelectionListener;
+import panel.color.ColorPanel;
 import panel.color.ColorSelectionListener;
 import component.Component;
 
@@ -24,9 +25,13 @@ public class PropertyPanel extends JPanel implements ComponentSelectionListener,
 	
 	// 컴포넌트 순서 변경 이벤트 리스너 리스트
 	private final List<ChangeComponentPropertyListener> changeComponentPropertyListeners = new ArrayList<>();
-	
+
+	// 싱글톤
+	public static PropertyPanel getInstance() { return PropertyPanel.SingleInstanceHolder.INSTANCE; }
+	private static class SingleInstanceHolder { private static final PropertyPanel INSTANCE = new PropertyPanel(); }
+
 	// 생성자
-	public PropertyPanel()
+	private PropertyPanel()
 	{
 		setLayout(new GridBagLayout());
 		

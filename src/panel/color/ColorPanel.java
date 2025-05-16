@@ -1,5 +1,6 @@
 package panel.color;
 
+import panel.canvas.CanvasPanel;
 import panel.toolbar.ToolSelectionListener;
 import tool.ToolMode;
 
@@ -19,9 +20,13 @@ public class ColorPanel extends JPanel
 	
 	// 색상 선택 이벤트 리스너 리스트
 	private final List<ColorSelectionListener> colorSelectionListeners = new ArrayList<>();
-	
+
+	// 싱글톤
+	public static ColorPanel getInstance() { return ColorPanel.SingleInstanceHolder.INSTANCE; }
+	private static class SingleInstanceHolder { private static final ColorPanel INSTANCE = new ColorPanel(); }
+
 	// 생성자
-	public ColorPanel()
+	private ColorPanel()
 	{
 		setLayout(new FlowLayout());
 		

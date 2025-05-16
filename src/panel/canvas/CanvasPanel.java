@@ -1,5 +1,6 @@
 package panel.canvas;
 
+import frame.MainFrame;
 import panel.color.ColorSelectionListener;
 import panel.property.ChangeComponentPropertyListener;
 import component.Component;
@@ -25,9 +26,13 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 	
 	// 컴포넌트 선택 이벤트 리스너 리스트
 	private final List<ComponentSelectionListener> componentSelectionListeners = new ArrayList<>();
-	
+
+	// 싱글톤
+	public static CanvasPanel getInstance() { return CanvasPanel.SingleInstanceHolder.INSTANCE; }
+	private static class SingleInstanceHolder { private static final CanvasPanel INSTANCE = new CanvasPanel(); }
+
 	// 생성자
-	public CanvasPanel()
+	private CanvasPanel()
 	{
 		// 수동 배치 사용
 		setLayout(null);

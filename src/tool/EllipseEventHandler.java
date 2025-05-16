@@ -1,6 +1,7 @@
 package tool;
 
 import component.Ellipse;
+import frame.MainFrame;
 import panel.canvas.CanvasPanel;
 
 import java.awt.*;
@@ -9,6 +10,11 @@ import java.awt.event.MouseEvent;
 public class EllipseEventHandler implements ToolEventHandler
 {
     private Ellipse ellipse;
+
+    // 싱글톤
+    public static EllipseEventHandler getInstance() { return EllipseEventHandler.SingleInstanceHolder.INSTANCE; }
+    private static class SingleInstanceHolder { private static final EllipseEventHandler INSTANCE = new EllipseEventHandler(); }
+    private EllipseEventHandler() {}
 
     @Override
     public void onMousePressed(CanvasPanel canvasPanel, MouseEvent e, Color color)

@@ -10,6 +10,11 @@ public class RectangleEventHandler implements ToolEventHandler
 {
     private Rectangle rectangle;
 
+    // 싱글톤
+    public static RectangleEventHandler getInstance() { return RectangleEventHandler.SingleInstanceHolder.INSTANCE; }
+    private static class SingleInstanceHolder { private static final RectangleEventHandler INSTANCE = new RectangleEventHandler(); }
+    private RectangleEventHandler() {}
+
     @Override
     public void onMousePressed(CanvasPanel canvasPanel, MouseEvent e, Color color)
     {
