@@ -7,7 +7,6 @@ import java.awt.event.*;
 
 public class Text extends Component
 {
-
 	private String textContent = "";								// 텍스트 내용
 	private boolean dragging = false;								// 드래그 중인지 여부
 	private final JTextArea editor = new JTextArea(textContent);	// 편집기

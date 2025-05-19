@@ -84,12 +84,7 @@ public class ToolbarPanel extends JPanel
 		toolSelectionListeners.add(listener);
 		listener.toolSelected(currentToolMode);
 	}
-	
-	// 도구 선택 이벤트 리스너 제거 메서드
-	public void removeToolSelectionListener(ToolSelectionListener listener) {
-		toolSelectionListeners.remove(listener);
-	}
-	
+
 	// 등록된 모든 리스너에게 도구 선택 이벤트 알림
 	private void notifyToolSelection(ToolMode selectedToolMode) {
 		for (ToolSelectionListener listener : toolSelectionListeners) {
