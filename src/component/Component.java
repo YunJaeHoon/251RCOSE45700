@@ -10,7 +10,7 @@ public abstract class Component
 	protected Color color;
 
 	public abstract void draw(Graphics g);
-	
+
 	public Rectangle getBounds()
 	{
 		return new Rectangle(
@@ -110,4 +110,23 @@ public abstract class Component
     public void enableEditing(JPanel parent) {
 		// 결합도 하락을 위한 메소드 추가
     }
+	public void changeX(int x) {
+		int width = this.getWidth();
+
+		this.setStartX(x);
+		this.setEndX(width + x);
+	}
+	public void changeY(int y) {
+		int width = this.getHeight();
+
+		this.setStartY(y);
+		this.setEndY(width + y);
+	}
+	public void drawBounds(Graphics g) {
+		Rectangle bounds = this.getBounds();
+		g.drawRect(bounds.x - 2, bounds.y - 2, bounds.width + 4, bounds.height + 4);
+
+		// 크기 조절 핸들 표시
+		g.fillRect(bounds.x + bounds.width, bounds.y + bounds.height, 10, 10);
+	}
 }
