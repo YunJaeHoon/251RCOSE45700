@@ -1,6 +1,5 @@
 package panel.canvas;
 
-import frame.MainFrame;
 import panel.color.ColorSelectionListener;
 import panel.property.ChangeComponentPropertyListener;
 import component.Component;
