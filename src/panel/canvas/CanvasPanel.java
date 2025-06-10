@@ -147,7 +147,7 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 	
 	// 선택한 컴포넌트를 제일 뒤로 (내부 순서 유지)
 	@Override
-	public void bringToBack() {
+	public void sendToBack() {
 		List<Component> selected = selectedComposite.getChildren();
 		for (Component component : selected) {
 			composite.remove(component);

@@ -136,16 +136,14 @@ public class PropertyPanel extends JPanel implements ComponentSelectionListener,
 		
 		// 선택한 컴포넌트를 제일 앞으로 보내는 버튼 액션 리스너 추가 (내부 순서 유지)
 		bringToFrontButton.addActionListener(e -> {
-			for(ChangeComponentPropertyListener listener : changeComponentPropertyListeners) {
-				listener.bringToFront();
-			}
+			Command command = new BringToFrontCommand();
+			command.execute();
 		});
 		
 		// 선택한 컴포넌트를 제일 뒤로 보내는 버튼 액션 리스너 추가 (내부 순서 유지)
 		sendToBackButton.addActionListener(e -> {
-			for(ChangeComponentPropertyListener listener : changeComponentPropertyListeners) {
-				listener.bringToBack();
-			}
+			Command command = new SendToBackCommand();
+			command.execute();
 		});
 	}
 	
@@ -185,7 +183,7 @@ public class PropertyPanel extends JPanel implements ComponentSelectionListener,
 		}
 	}
 	
-	// 선택한 컴포넌트의 red 코드 메서드
+	// 선택한 컴포넌트의 red 코드 변경 메서드
 	public void changeRedCode(int redCode)
 	{
 		// 리스너 알림
@@ -194,7 +192,7 @@ public class PropertyPanel extends JPanel implements ComponentSelectionListener,
 		}
 	}
 	
-	// 선택한 컴포넌트의 green 코드 메서드
+	// 선택한 컴포넌트의 green 코드 변경 메서드
 	public void changeGreenCode(int greenCode)
 	{
 		// 리스너 알림
@@ -203,12 +201,30 @@ public class PropertyPanel extends JPanel implements ComponentSelectionListener,
 		}
 	}
 	
-	// 선택한 컴포넌트의 blue 코드 메서드
+	// 선택한 컴포넌트의 blue 코드 변경 메서드
 	public void changeBlueCode(int blueCode)
 	{
 		// 리스너 알림
 		for(ChangeComponentPropertyListener listener : changeComponentPropertyListeners) {
 			listener.changeBlueCode(blueCode);
+		}
+	}
+
+	// 선택한 컴포넌트를 맨 앞으로 이동 메서드
+	public void bringToFront()
+	{
+		// 리스너 알림
+		for(ChangeComponentPropertyListener listener : changeComponentPropertyListeners) {
+			listener.bringToFront();
+		}
+	}
+
+	// 선택한 컴포넌트를 맨 뒤로 이동 메서드
+	public void sendToBack()
+	{
+		// 리스너 알림
+		for(ChangeComponentPropertyListener listener : changeComponentPropertyListeners) {
+			listener.sendToBack();
 		}
 	}
 	

@@ -29,5 +29,5 @@ public interface ChangeComponentPropertyListener extends EventListener
 	void bringToFront();
 	
 	// 선택한 컴포넌트를 제일 뒤로
-	void bringToBack();
+	void sendToBack();
 }
