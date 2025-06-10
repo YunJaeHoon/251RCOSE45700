@@ -1,6 +1,7 @@
 package tool;
 
 import component.Component;
+import component.Composite;
 import panel.canvas.CanvasPanel;
 
 import java.awt.*;
@@ -36,13 +37,13 @@ public class SelectEventHandler implements ToolEventHandler
         boolean found = false;
 
         // 선택된 컴포넌트 리스트
-        List<Component> selectedComponents = canvasPanel.getSelectedComponentList();
+        Composite selectedComponents = canvasPanel.getSelectedComponentList();
 
         // 먼저, 현재 하나의 컴포넌트가 선택된 상태이고, 크기 조절 버튼을 눌렀는지 확인
         if (selectedComponents.size() == 1)
         {
             // 선택된 컴포넌트
-            Component component = selectedComponents.getFirst();
+            Component component = selectedComponents.get(0);
 
             // 컴포넌트 경계선
             Rectangle bounds = component.getBounds();
@@ -70,7 +71,7 @@ public class SelectEventHandler implements ToolEventHandler
         if(!found)
         {
             // 전체 컴포넌트 리스트
-            List<Component> components = canvasPanel.getComponentList();
+            Composite components = canvasPanel.getComponentList();
 
             for(int i = components.size() - 1; i >= 0; i--)
             {
@@ -113,7 +114,7 @@ public class SelectEventHandler implements ToolEventHandler
     public void onMouseDragged(CanvasPanel canvasPanel, MouseEvent e)
     {
         // 선택된 컴포넌트 리스트
-        List<Component> selectedComponents = canvasPanel.getSelectedComponentList();
+        Composite selectedComponents = canvasPanel.getSelectedComponentList();
 
         // 컴포넌트 크기 변경
         if (isResizing && resizingComponent != null)
@@ -132,7 +133,7 @@ public class SelectEventHandler implements ToolEventHandler
         // 컴포넌트 위치 변경
         else if (!selectedComponents.isEmpty())
         {
-            for (Component component : selectedComponents)
+            for (Component component : selectedComponents.getChildren())
             {
                 if(x != null && y != null)
                 {
