@@ -20,4 +20,8 @@ public class ChangeRedCodeCommand implements Command
     public void execute() {
         propertyPanel.changeRedCode(redCode);
     }
+
+    // 되돌리기
+    @Override
+    public void undo() {}
 }

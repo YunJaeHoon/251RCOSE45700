@@ -26,7 +26,8 @@ public class ColorPanel extends JPanel
 	public static ColorPanel getInstance() { return ColorPanel.SingleInstanceHolder.INSTANCE; }
 	private static class SingleInstanceHolder { private static final ColorPanel INSTANCE = new ColorPanel(); }
 
-	// 생성자
+	/// 생성자
+
 	private ColorPanel()
 	{
 		setLayout(new FlowLayout());
@@ -43,8 +44,15 @@ public class ColorPanel extends JPanel
 		createColorButton(Color.BLUE);
 		createColorButton(Color.MAGENTA);
 	}
-	
-	// 버튼 생성 메서드
+
+	/// Getter
+
+	public Color getCurrentColor() {
+		return currentColor;
+	}
+
+	/// 버튼 생성
+
 	private JToggleButton createColorButton(Color selectedColor)
 	{
 		// 버튼 생성
@@ -83,6 +91,8 @@ public class ColorPanel extends JPanel
 		
 		return button;
 	}
+
+	/// 색상 선택 이벤트 관리
 	
 	// 색상 선택 이벤트 리스너 추가 메서드
 	public void addColorSelectionListener(ColorSelectionListener listener) {
@@ -130,5 +140,4 @@ public class ColorPanel extends JPanel
 			notifyColorSelection(color);
 		}
 	}
-
 }

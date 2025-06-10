@@ -24,7 +24,8 @@ public class ToolbarPanel extends JPanel
 	public static ToolbarPanel getInstance() { return ToolbarPanel.SingleInstanceHolder.INSTANCE; }
 	private static class SingleInstanceHolder { private static final ToolbarPanel INSTANCE = new ToolbarPanel(); }
 
-	// 생성자
+	/// 생성자
+
 	private ToolbarPanel()
 	{
 		// 객체 생성
@@ -45,8 +46,13 @@ public class ToolbarPanel extends JPanel
 		// 툴바 추가
 		add(toolBar, BorderLayout.CENTER);
 	}
-	
-	// 버튼 생성 메서드
+
+	/// Getter
+
+	public ToolMode getCurrentToolMode() { return currentToolMode; }
+
+	/// 버튼 생성
+
 	private JToggleButton createToolButton(String name, String relativeIconPath, ToolMode selectedToolMode)
 	{
 		// 버튼 생성
@@ -80,6 +86,8 @@ public class ToolbarPanel extends JPanel
 		
 		return button;
 	}
+
+	/// 도구 선택 이벤트 관리
 	
 	// 도구 선택 이벤트 리스너 추가 메서드
 	public void addToolSelectionListener(ToolSelectionListener listener) {

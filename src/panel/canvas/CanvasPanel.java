@@ -16,7 +16,9 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 
 public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorSelectionListener, ChangeComponentPropertyListener, MouseListener, MouseMotionListener
@@ -31,11 +33,15 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 	// 컴포넌트 선택 이벤트 리스너 리스트
 	private final List<ComponentSelectionListener> componentSelectionListeners = new ArrayList<>();
 
+	// 커맨드 기록
+	private final Deque<Command> commandHistory = new ArrayDeque<>();
+
 	// 싱글톤
 	public static CanvasPanel getInstance() { return CanvasPanel.SingleInstanceHolder.INSTANCE; }
 	private static class SingleInstanceHolder { private static final CanvasPanel INSTANCE = new CanvasPanel(); }
 
-	// 생성자
+	/// 생성자
+
 	private CanvasPanel()
 	{
 		// 수동 배치 사용
@@ -58,6 +64,8 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 		add(currentToolLabel);
 	}
 
+	/// Getter
+
 	// 컴포넌트 리스트 얻기
 	public Composite getComponentList() {
 		return composite;
@@ -67,6 +75,8 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 	public Composite getSelectedComponentList() {
 		return selectedComposite;
 	}
+
+	/// 컴포넌트 선택 이벤트 관리
 	
 	// 컴포넌트 선택 이벤트 리스너 추가 메서드
 	public void addComponentSelectionListener(ComponentSelectionListener listener) {
@@ -82,6 +92,8 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 			listener.displayProperty();
 		}
 	}
+
+	/// 속성 변경 이벤트 처리
 	
 	// 선택한 컴포넌트의 x 좌표 변경
 	@Override
@@ -163,6 +175,8 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 		}
 		repaint();
 	}
+
+	/// 도구 선택 이벤트 처리
 	
 	// 도구 선택 이벤트 처리 메서드
 	@Override
@@ -181,6 +195,8 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 		
 		repaint();
 	}
+
+	/// 색상 선택 이벤트 처리
 	
 	// 색상 선택 이벤트 처리 메서드
 	@Override
@@ -207,16 +223,6 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 		Command command = new MousePressedCommand(e);
 		command.execute();
 	}
-
-	public void executeMousePressedEvent(MouseEvent e)
-	{
-		// 캔버스 영역 클릭 시 포커스를 캔버스 패널로 이동하여 JTextArea가 focusLost 이벤트를 발생하게 함
-		requestFocusInWindow();
-
-		// 모드에 따른 동작 수행
-		currentToolMode.getToolEventHandler().onMousePressed(this, e, currentColor);
-		repaint();
-	}
 	
 	/// 마우스 버튼을 누른채로 드래그했을 때, 이벤트 처리 메서드
 
@@ -225,13 +231,6 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 	{
 		Command command = new MouseDraggedCommand(e);
 		command.execute();
-	}
-
-	public void executeMouseDraggedEvent(MouseEvent e)
-	{
-		// 모드에 따른 동작 수행
-		currentToolMode.getToolEventHandler().onMouseDragged(this, e);
-		repaint();
 	}
 	
 	/// 마우스 버튼에서 손을 뗐을 때, 이벤트 처리 메서드
@@ -243,13 +242,27 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 		command.execute();
 	}
 
-	public void executeMouseReleasedEvent(MouseEvent e)
-	{
-		// 모드에 따른 동작 수행
-		currentToolMode.getToolEventHandler().onMouseReleased(this, e);
-		repaint();
+	/// 커맨드 실행
+
+	public void executeCommand(Command command) {
+		command.execute();
+		commandHistory.push(command);
 	}
-	
+
+	/// 커맨드 되돌리기
+
+	public void undo()
+	{
+		if(!commandHistory.isEmpty())
+		{
+			Command lastCommand = commandHistory.pop();
+			lastCommand.undo();
+			repaint();
+		}
+	}
+
+	/// 컴포넌트 그리기
+
 	@Override
 	protected void paintComponent(Graphics g)
 	{
