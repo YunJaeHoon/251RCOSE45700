@@ -12,4 +12,8 @@ public class BringToFrontCommand implements Command
     public void execute() {
         propertyPanel.bringToFront();
     }
+
+    // 되돌리기
+    @Override
+    public void undo() {}
 }

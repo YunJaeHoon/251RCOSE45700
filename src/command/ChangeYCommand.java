@@ -20,4 +20,8 @@ public class ChangeYCommand implements Command
     public void execute() {
         propertyPanel.changeY(y);
     }
+
+    // 되돌리기
+    @Override
+    public void undo() {}
 }

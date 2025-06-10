@@ -116,7 +116,7 @@ public class SelectEventHandler implements ToolEventHandler
         Composite selectedComposite = canvasPanel.getSelectedComponentList();
 
         // 컴포넌트 크기 변경
-        if (isResizing && resizingComponent != null)
+        if(isResizing && resizingComponent != null)
         {
             int newWidth = Math.max(10, resizingComponent.getWidth() + (e.getX() - resizingStartX));
             int newHeight = Math.max(10, resizingComponent.getHeight() + (e.getY() - resizingStartY));
@@ -130,7 +130,7 @@ public class SelectEventHandler implements ToolEventHandler
             canvasPanel.notifyDisplayProperty();
         }
         // 컴포넌트 위치 변경
-        else if (!selectedComposite.isEmpty())
+        else if(!selectedComposite.isEmpty())
         {
             for (Component component : selectedComposite.getChildren())
             {

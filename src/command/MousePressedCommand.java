@@ -21,4 +21,8 @@ public class MousePressedCommand implements Command
     public void execute() {
         canvasPanel.executeMousePressedEvent(mouseEvent);
     }
+
+    // 되돌리기
+    @Override
+    public void undo() {}
 }

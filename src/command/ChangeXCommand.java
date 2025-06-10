@@ -20,4 +20,8 @@ public class ChangeXCommand implements Command
     public void execute() {
         propertyPanel.changeX(x);
     }
+
+    // 되돌리기
+    @Override
+    public void undo() {}
 }

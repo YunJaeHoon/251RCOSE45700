@@ -20,4 +20,8 @@ public class ChangeHeightCommand implements Command
     public void execute() {
         propertyPanel.changeHeight(height);
     }
+
+    // 되돌리기
+    @Override
+    public void undo() {}
 }

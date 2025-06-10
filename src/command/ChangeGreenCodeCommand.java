@@ -15,9 +15,13 @@ public class ChangeGreenCodeCommand implements Command
         this.greenCode = greenCode;
     }
 
-    // Green 코드
+    // Green 코드 변경
     @Override
     public void execute() {
         propertyPanel.changeGreenCode(greenCode);
     }
+
+    // 되돌리기
+    @Override
+    public void undo() {}
 }

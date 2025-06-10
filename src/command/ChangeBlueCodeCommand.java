@@ -15,9 +15,13 @@ public class ChangeBlueCodeCommand implements Command
         this.blueCode = blueCode;
     }
 
-    // Blue 코드
+    // Blue 코드 변경
     @Override
     public void execute() {
         propertyPanel.changeBlueCode(blueCode);
     }
+
+    // 되돌리기
+    @Override
+    public void undo() {}
 }

@@ -12,4 +12,8 @@ public class SendToBackCommand implements Command
     public void execute() {
         propertyPanel.sendToBack();
     }
+
+    // 되돌리기
+    @Override
+    public void undo() {}
 }

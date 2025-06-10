@@ -21,4 +21,8 @@ public class MouseReleasedCommand implements Command
     public void execute() {
         canvasPanel.executeMouseReleasedEvent(mouseEvent);
     }
+
+    // 되돌리기
+    @Override
+    public void undo() {}
 }

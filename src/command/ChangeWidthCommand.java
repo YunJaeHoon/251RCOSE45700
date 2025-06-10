@@ -20,4 +20,8 @@ public class ChangeWidthCommand implements Command
     public void execute() {
         propertyPanel.changeWidth(width);
     }
+
+    // 되돌리기
+    @Override
+    public void undo() {}
 }

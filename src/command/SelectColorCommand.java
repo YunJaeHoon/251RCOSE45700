@@ -22,4 +22,8 @@ public class SelectColorCommand implements Command
     public void execute() {
         colorPanel.setCurrentColor(color);
     }
+
+    // 되돌리기
+    @Override
+    public void undo() {}
 }

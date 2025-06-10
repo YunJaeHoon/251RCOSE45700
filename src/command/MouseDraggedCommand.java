@@ -21,4 +21,8 @@ public class MouseDraggedCommand implements Command
     public void execute() {
         canvasPanel.executeMouseDraggedEvent(mouseEvent);
     }
+
+    // 되돌리기
+    @Override
+    public void undo() {}
 }

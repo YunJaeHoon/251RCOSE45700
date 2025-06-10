@@ -75,7 +75,9 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 	}
 	
 	// 등록된 모든 리스너에게 컴포넌트 속성 출력 이벤트 알림
-	public void notifyDisplayProperty() {
+	public void notifyDisplayProperty()
+	{
+		// 리스너 알림
 		for(ComponentSelectionListener listener : componentSelectionListeners) {
 			listener.displayProperty();
 		}

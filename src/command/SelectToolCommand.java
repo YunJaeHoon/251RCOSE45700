@@ -21,4 +21,8 @@ public class SelectToolCommand implements Command
     public void execute() {
         toolbarPanel.setCurrentToolMode(toolMode);
     }
+
+    // 되돌리기
+    @Override
+    public void undo() {}
 }
