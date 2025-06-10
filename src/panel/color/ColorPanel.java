@@ -69,11 +69,11 @@ public class ColorPanel extends JPanel
 			}
 		});
 		
-		// 액션 리스너: 버튼 클릭 시 색성 선택 명령 실행
+		// 액션 리스너: 버튼 클릭 시 색상 변경 명령 실행
 		button.addActionListener(e -> {
-			if (button.isSelected() && currentColor != selectedColor)
+			if(button.isSelected() && currentColor != selectedColor)
 			{
-				Command command = new SelectColorCommand(this, selectedColor);
+				Command command = new SelectColorCommand(selectedColor);
 				command.execute();
 			}
 		});
@@ -115,9 +115,9 @@ public class ColorPanel extends JPanel
 			}
 
 			// 다른 버튼 스타일 조정
-			for (Map.Entry<Color, JToggleButton> entry : colorButtonMap.entrySet())
+			for(Map.Entry<Color, JToggleButton> entry : colorButtonMap.entrySet())
 			{
-				if (!entry.getKey().equals(color))
+				if(!entry.getKey().equals(color))
 				{
 					JToggleButton otherButton = entry.getValue();
 					otherButton.setPreferredSize(new Dimension(30, 30));

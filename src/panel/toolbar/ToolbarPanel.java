@@ -1,5 +1,7 @@
 package panel.toolbar;
 
+import command.Command;
+import command.SelectToolCommand;
 import panel.property.PropertyPanel;
 import tool.ToolMode;
 
@@ -64,12 +66,12 @@ public class ToolbarPanel extends JPanel
 		// 버튼 그룹에 버튼 추가 (버튼 단일 선택)
 		buttonGroup.add(button);
 		
-		// 액션 리스너: 버튼 클릭 시 모드 변경 및 리스너 알림
+		// 액션 리스너: 버튼 클릭 시 도구 변경 명령 실행
 		button.addActionListener(e -> {
-			if (button.isSelected() && currentToolMode != selectedToolMode)
+			if(button.isSelected() && currentToolMode != selectedToolMode)
 			{
-				currentToolMode = selectedToolMode;
-				notifyToolSelection(currentToolMode);
+				Command command = new SelectToolCommand(selectedToolMode);
+				command.execute();
 			}
 		});
 		
@@ -89,6 +91,20 @@ public class ToolbarPanel extends JPanel
 	private void notifyToolSelection(ToolMode selectedToolMode) {
 		for (ToolSelectionListener listener : toolSelectionListeners) {
 			listener.toolSelected(selectedToolMode);
+		}
+	}
+
+	// 도구 변경 메서드
+	public void setCurrentToolMode(ToolMode toolMode)
+	{
+		// 새로운 도구가 선택된 경우
+		if(!toolMode.equals(this.currentToolMode))
+		{
+			// 도구 변경
+			currentToolMode = toolMode;
+
+			// 리스너 알림
+			notifyToolSelection(currentToolMode);
 		}
 	}
 }
