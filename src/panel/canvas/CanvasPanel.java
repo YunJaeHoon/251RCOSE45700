@@ -1,5 +1,9 @@
 package panel.canvas;
 
+import command.Command;
+import command.MouseDraggedCommand;
+import command.MousePressedCommand;
+import command.MouseReleasedCommand;
 import panel.color.ColorSelectionListener;
 import panel.property.ChangeComponentPropertyListener;
 import component.Component;
@@ -193,9 +197,16 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 		repaint();
 	}
 	
-	// 마우스 버튼을 눌렀을 때, 이벤트 처리 메서드
+	/// 마우스 버튼을 눌렀을 때, 이벤트 처리 메서드
+
 	@Override
 	public void mousePressed(MouseEvent e)
+	{
+		Command command = new MousePressedCommand(e);
+		command.execute();
+	}
+
+	public void executeMousePressedEvent(MouseEvent e)
 	{
 		// 캔버스 영역 클릭 시 포커스를 캔버스 패널로 이동하여 JTextArea가 focusLost 이벤트를 발생하게 함
 		requestFocusInWindow();
@@ -205,18 +216,34 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 		repaint();
 	}
 	
-	// 마우스 버튼을 누른채로 드래그했을 때, 이벤트 처리 메서드
+	/// 마우스 버튼을 누른채로 드래그했을 때, 이벤트 처리 메서드
+
 	@Override
 	public void mouseDragged(MouseEvent e)
 	{
+		Command command = new MouseDraggedCommand(e);
+		command.execute();
+	}
+
+	public void executeMouseDraggedEvent(MouseEvent e)
+	{
+		// 모드에 따른 동작 수행
 		currentToolMode.getToolEventHandler().onMouseDragged(this, e);
 		repaint();
 	}
 	
-	// 마우스 버튼에서 손을 뗐을 때, 이벤트 처리 메서드
+	/// 마우스 버튼에서 손을 뗐을 때, 이벤트 처리 메서드
+
 	@Override
 	public void mouseReleased(MouseEvent e)
 	{
+		Command command = new MouseReleasedCommand(e);
+		command.execute();
+	}
+
+	public void executeMouseReleasedEvent(MouseEvent e)
+	{
+		// 모드에 따른 동작 수행
 		currentToolMode.getToolEventHandler().onMouseReleased(this, e);
 		repaint();
 	}
