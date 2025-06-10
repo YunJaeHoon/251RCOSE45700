@@ -1,7 +1,7 @@
 package panel.property;
 
+import component.Composite;
 import panel.canvas.ComponentSelectionListener;
-import panel.color.ColorPanel;
 import panel.color.ColorSelectionListener;
 import component.Component;
 
@@ -13,7 +13,7 @@ import java.util.List;
 public class PropertyPanel extends JPanel implements ComponentSelectionListener, ColorSelectionListener
 {
 	// 현재 선택한 컴포넌트 리스트
-	private List<Component> selectedComponents = new ArrayList<>();
+	private Composite selectedComposite = new Composite();
 	
 	private final JTextField xField = new JTextField(5);
 	private final JTextField yField = new JTextField(5);
@@ -225,8 +225,8 @@ public class PropertyPanel extends JPanel implements ComponentSelectionListener,
 	
 	// 선택한 컴포넌트 리스트 설정
 	@Override
-	public void selectComponents(List<Component> components) {
-		selectedComponents = components;
+	public void selectComponents(Composite composite) {
+		selectedComposite = composite;
 	}
 	
 	// 속성 출력
@@ -234,18 +234,18 @@ public class PropertyPanel extends JPanel implements ComponentSelectionListener,
 	public void displayProperty()
 	{
 		// 선택된 컴포넌트가 없다면, 무시
-		if(selectedComponents.isEmpty()) {
+		if(selectedComposite.isEmpty()) {
 			return;
 		}
 		
 		// 선택된 컴포넌트가 2개 이상이면, 속성을 출력하지 않음
-		if (selectedComponents.size() > 1) {
+		if (selectedComposite.size() > 1) {
 			clearProperties();
 			return;
 		}
 		
 		// 속성 출력
-		Component component = selectedComponents.getFirst();
+		Component component = selectedComposite.get(0);
 		xField.setText(String.valueOf(Math.min(component.getStartX(), component.getEndX())));
 		yField.setText(String.valueOf(Math.min(component.getStartY(), component.getEndY())));
 		widthField.setText(String.valueOf(component.getWidth()));

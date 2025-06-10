@@ -22,6 +22,18 @@ public class Composite extends Component{
     public List<Component> getChildren() {
         return children;
     }
+    public boolean isEmpty() {
+        return children.isEmpty();
+    }
+    public int size() {
+        return children.size();
+    }
+    public Component get(int idx) {
+        return children.get(idx);
+    }
+    public boolean contains(Component component) {
+        return children.contains(component);
+    }
     @Override
     public void draw(Graphics g) {
         for (Component child : children) {
