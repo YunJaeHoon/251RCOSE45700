@@ -6,7 +6,6 @@ import panel.canvas.CanvasPanel;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.util.List;
 
 public class SelectEventHandler implements ToolEventHandler
 {
@@ -37,13 +36,13 @@ public class SelectEventHandler implements ToolEventHandler
         boolean found = false;
 
         // 선택된 컴포넌트 리스트
-        Composite selectedComponents = canvasPanel.getSelectedComponentList();
+        Composite selectedComposite = canvasPanel.getSelectedComponentList();
 
         // 먼저, 현재 하나의 컴포넌트가 선택된 상태이고, 크기 조절 버튼을 눌렀는지 확인
-        if (selectedComponents.size() == 1)
+        if (selectedComposite.size() == 1)
         {
             // 선택된 컴포넌트
-            Component component = selectedComponents.get(0);
+            Component component = selectedComposite.get(0);
 
             // 컴포넌트 경계선
             Rectangle bounds = component.getBounds();
@@ -71,29 +70,29 @@ public class SelectEventHandler implements ToolEventHandler
         if(!found)
         {
             // 전체 컴포넌트 리스트
-            Composite components = canvasPanel.getComponentList();
+            Composite composite = canvasPanel.getComponentList();
 
-            for(int i = components.size() - 1; i >= 0; i--)
+            for(int i = composite.size() - 1; i >= 0; i--)
             {
-                Component component = components.get(i);
+                Component component = composite.get(i);
 
                 if(component.contains(e.getPoint()))
                 {
                     found = true;
 
                     // 이미 선택한 컴포넌트일 경우 아무 처리도 하지 않고 종료
-                    if(selectedComponents.contains(component))
+                    if(selectedComposite.contains(component))
                         break;
 
                     // Ctrl 키가 눌리지 않았으면 단일 선택으로 처리
                     if (!ctrlDown) {
-                        selectedComponents.clear();
+                        selectedComposite.clear();
                     }
 
                     // 이미 선택된 컴포넌트가 아니라면 선택
-                    if (!selectedComponents.contains(component))
+                    if (!selectedComposite.contains(component))
                     {
-                        selectedComponents.add(component);
+                        selectedComposite.add(component);
                         component.enableEditing(canvasPanel);
 
                         canvasPanel.notifyDisplayProperty();
@@ -106,7 +105,7 @@ public class SelectEventHandler implements ToolEventHandler
 
         // 아무것도 hit 되지 않았을 경우 선택 초기화
         if (!found) {
-            selectedComponents.clear();
+            selectedComposite.clear();
         }
     }
 
@@ -114,7 +113,7 @@ public class SelectEventHandler implements ToolEventHandler
     public void onMouseDragged(CanvasPanel canvasPanel, MouseEvent e)
     {
         // 선택된 컴포넌트 리스트
-        Composite selectedComponents = canvasPanel.getSelectedComponentList();
+        Composite selectedComposite = canvasPanel.getSelectedComponentList();
 
         // 컴포넌트 크기 변경
         if (isResizing && resizingComponent != null)
@@ -131,9 +130,9 @@ public class SelectEventHandler implements ToolEventHandler
             canvasPanel.notifyDisplayProperty();
         }
         // 컴포넌트 위치 변경
-        else if (!selectedComponents.isEmpty())
+        else if (!selectedComposite.isEmpty())
         {
-            for (Component component : selectedComponents.getChildren())
+            for (Component component : selectedComposite.getChildren())
             {
                 if(x != null && y != null)
                 {
