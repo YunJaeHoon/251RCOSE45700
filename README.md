@@ -1,3 +1,6 @@
+![image](https://github.com/user-attachments/assets/f93cd261-d981-4071-88ad-0b307b4ef933)
+
+
 ## 실전SW프로젝트
 고려대학교 실전SW프로젝트 B2C 서비스 텀 프로젝트 Repository입니다.
 - 2020320099 컴퓨터학과 윤재훈
