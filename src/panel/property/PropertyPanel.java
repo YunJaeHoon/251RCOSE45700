@@ -104,18 +104,36 @@ public class PropertyPanel extends JPanel implements ComponentSelectionListener,
 		redoButton.addActionListener(e -> canvasPanel.redo());
 		add(redoButton, gbc);
 
-		// 빈 패널을 추가하여 남은 공간을 채워 상단 정렬
+		// 빈 패널 및 구분선 추가
 		gbc.gridy = 3;
 
 		gbc.gridx = 0;
 		gbc.gridwidth = 8;
-		gbc.weighty = 1.0;
-		gbc.fill = GridBagConstraints.BOTH;
-		add(new JPanel(), gbc);
+		gbc.weighty = 0;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		add(Box.createVerticalStrut(10), gbc);
+
+		gbc.gridy = 4;
+
+		gbc.gridx = 0;
+		gbc.gridwidth = 8;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		JSeparator separator = new JSeparator(SwingConstants.HORIZONTAL);
+		separator.setForeground(Color.BLACK);
+		separator.setBackground(Color.BLACK);
+		add(separator, gbc);
+
+		gbc.gridy = 5;
+
+		gbc.gridx = 0;
+		gbc.gridwidth = 8;
+		gbc.weighty = 0;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		add(Box.createVerticalStrut(10), gbc);
 		
 		/// 네 번째 행: z-order 버튼
 
-		gbc.gridy = 4;
+		gbc.gridy = 6;
 		
 		gbc.gridx = 0;
 		gbc.gridwidth = 4;
@@ -128,7 +146,7 @@ public class PropertyPanel extends JPanel implements ComponentSelectionListener,
 		add(sendToBackButton, gbc);
 		
 		// 빈 패널을 추가하여 남은 공간을 채워 상단 정렬
-		gbc.gridy = 5;
+		gbc.gridy = 7;
 		
 		gbc.gridx = 0;
 		gbc.gridwidth = 8;
