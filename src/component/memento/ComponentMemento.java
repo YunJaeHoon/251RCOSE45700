@@ -4,16 +4,16 @@ import java.awt.*;
 
 public class ComponentMemento
 {
-    public final int startX, startY, width, height;
+    public final int startX, startY, endX, endY;
     public final Color color;
 
     // 생성자
-    public ComponentMemento(int startX, int startY, int width, int height, Color color)
+    public ComponentMemento(int startX, int startY, int endX, int endY, Color color)
     {
         this.startX = startX;
         this.startY = startY;
-        this.width = width;
-        this.height = height;
+        this.endX = endX;
+        this.endY = endY;
         this.color = color;
     }
 }
