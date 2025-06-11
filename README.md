@@ -1,5 +1,4 @@
-![image](https://github.com/user-attachments/assets/f93cd261-d981-4071-88ad-0b307b4ef933)
-
+![image](https://github.com/user-attachments/assets/5f65ff92-c75f-49be-8033-fce93c02ef1f)
 
 ## 실전SW프로젝트
 고려대학교 실전SW프로젝트 B2C 서비스 텀 프로젝트 Repository입니다.
