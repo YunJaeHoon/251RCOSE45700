@@ -34,7 +34,8 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 	private final List<ComponentSelectionListener> componentSelectionListeners = new ArrayList<>();
 
 	// 커맨드 기록
-	private final Deque<Command> commandHistory = new ArrayDeque<>();
+	private final Deque<Command> commandHistory = new ArrayDeque<>();	// 커맨드 기록 스택
+	private final Deque<Command> redoStack = new ArrayDeque<>();		// 커맨드 Redo 스택
 
 	// 싱글톤
 	public static CanvasPanel getInstance() { return CanvasPanel.SingleInstanceHolder.INSTANCE; }
@@ -244,19 +245,35 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 
 	/// 커맨드 실행
 
-	public void executeCommand(Command command) {
-		command.execute();
-		commandHistory.push(command);
+	public void executeCommand(Command command)
+	{
+		command.execute();				// 커맨드 실행
+		commandHistory.push(command);	// 커맨드 기록
+		redoStack.clear();				// Redo 스택 초기화
 	}
 
-	/// 커맨드 되돌리기
+	/// 커맨드 Undo
 
 	public void undo()
 	{
 		if(!commandHistory.isEmpty())
 		{
-			Command lastCommand = commandHistory.pop();
-			lastCommand.undo();
+			Command lastCommand = commandHistory.pop();		// 가장 최근 기록의 커맨드 pop
+			lastCommand.undo();								// 커맨드 Undo
+			redoStack.push(lastCommand);					// Redo 스택에 push
+			repaint();
+		}
+	}
+
+	/// 커맨드 Redo
+
+	public void redo()
+	{
+		if(!redoStack.isEmpty())
+		{
+			Command command = redoStack.pop();	// 가장 최근 Undo된 커맨드 pop
+			command.execute();					// 커맨드 실행(Redo)
+			commandHistory.push(command);		// 커맨드 기록 스택에 push
 			repaint();
 		}
 	}
