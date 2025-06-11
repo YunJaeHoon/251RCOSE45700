@@ -1,5 +1,7 @@
 package panel.color;
 
+import command.Command;
+import command.SelectColorCommand;
 import panel.canvas.CanvasPanel;
 import panel.toolbar.ToolSelectionListener;
 import tool.ToolMode;
@@ -9,14 +11,13 @@ import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
 
 public class ColorPanel extends JPanel
 {
-	private Color currentColor = Color.BLACK;                   	// 현재 색깔
-	private final ButtonGroup buttonGroup = new ButtonGroup();  	// 색상 단일 선택을 위한 버튼 그룹
+	private Color currentColor = Color.BLACK;									// 현재 색깔
+	private final Map<Color, JToggleButton> colorButtonMap = new HashMap<>();	// 버튼 맵
 	
 	// 색상 선택 이벤트 리스너 리스트
 	private final List<ColorSelectionListener> colorSelectionListeners = new ArrayList<>();
@@ -25,7 +26,8 @@ public class ColorPanel extends JPanel
 	public static ColorPanel getInstance() { return ColorPanel.SingleInstanceHolder.INSTANCE; }
 	private static class SingleInstanceHolder { private static final ColorPanel INSTANCE = new ColorPanel(); }
 
-	// 생성자
+	/// 생성자
+
 	private ColorPanel()
 	{
 		setLayout(new FlowLayout());
@@ -42,8 +44,15 @@ public class ColorPanel extends JPanel
 		createColorButton(Color.BLUE);
 		createColorButton(Color.MAGENTA);
 	}
-	
-	// 버튼 생성 메서드
+
+	/// Getter
+
+	public Color getCurrentColor() {
+		return currentColor;
+	}
+
+	/// 버튼 생성
+
 	private JToggleButton createColorButton(Color selectedColor)
 	{
 		// 버튼 생성
@@ -53,9 +62,9 @@ public class ColorPanel extends JPanel
 		button.setBackground(selectedColor);
 		button.setPreferredSize(new Dimension(30, 30));
 		
-		// 버튼 그룹에 버튼 추가 (버튼 단일 선택)
-		buttonGroup.add(button);
-		
+		// 버튼 맵에 버튼 추가
+		colorButtonMap.put(selectedColor, button);
+
 		// 버튼이 눌렸을 때의 기본 스타일 제거
 		button.setUI(new BasicButtonUI() {
 			@Override
@@ -68,27 +77,12 @@ public class ColorPanel extends JPanel
 			}
 		});
 		
-		// 액션 리스너: 버튼 클릭 시 모드 변경 및 리스너 알림
+		// 액션 리스너: 버튼 클릭 시 색상 변경 명령 실행
 		button.addActionListener(e -> {
-			if (button.isSelected() && currentColor != selectedColor)
+			if(button.isSelected() && currentColor != selectedColor)
 			{
-				// 현재 선택된 색상 변경
-				currentColor = selectedColor;
-				
-				// 선택된 색상 버튼 크기 키우기
-				button.setPreferredSize(new Dimension(40, 40));
-				button.revalidate();
-				
-				// 리스너에게 색상 선택 이벤트 알림
-				notifyColorSelection(selectedColor);
-				
-				// 다른 버튼의 크기는 원래대로 되돌리기
-				for (AbstractButton otherButton : Collections.list(buttonGroup.getElements())) {
-					if (otherButton != button) {
-						otherButton.setPreferredSize(new Dimension(30, 30));
-						otherButton.revalidate();
-					}
-				}
+				Command command = new SelectColorCommand(selectedColor);
+				command.execute();
 			}
 		});
 		
@@ -97,6 +91,8 @@ public class ColorPanel extends JPanel
 		
 		return button;
 	}
+
+	/// 색상 선택 이벤트 관리
 	
 	// 색상 선택 이벤트 리스너 추가 메서드
 	public void addColorSelectionListener(ColorSelectionListener listener) {
@@ -108,6 +104,40 @@ public class ColorPanel extends JPanel
 	private void notifyColorSelection(Color selectedColor) {
 		for (ColorSelectionListener listener : colorSelectionListeners) {
 			listener.colorSelected(selectedColor);
+		}
+	}
+
+	// 색상 변경 메서드
+	public void setCurrentColor(Color color)
+	{
+		// 새로운 색상이 선택된 경우
+		if(!color.equals(this.currentColor))
+		{
+			// 색상 변경
+			this.currentColor = color;
+
+			// 선택된 색상 버튼 스타일 조정
+			JToggleButton selectedButton = colorButtonMap.get(color);
+			if (selectedButton != null) {
+				selectedButton.setPreferredSize(new Dimension(40, 40));
+				selectedButton.revalidate();
+				selectedButton.repaint();
+			}
+
+			// 다른 버튼 스타일 조정
+			for(Map.Entry<Color, JToggleButton> entry : colorButtonMap.entrySet())
+			{
+				if(!entry.getKey().equals(color))
+				{
+					JToggleButton otherButton = entry.getValue();
+					otherButton.setPreferredSize(new Dimension(30, 30));
+					otherButton.revalidate();
+					otherButton.repaint();
+				}
+			}
+
+			// 리스너 알림
+			notifyColorSelection(color);
 		}
 	}
 }

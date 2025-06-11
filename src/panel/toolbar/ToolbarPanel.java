@@ -1,5 +1,7 @@
 package panel.toolbar;
 
+import command.Command;
+import command.SelectToolCommand;
 import panel.property.PropertyPanel;
 import tool.ToolMode;
 
@@ -22,7 +24,8 @@ public class ToolbarPanel extends JPanel
 	public static ToolbarPanel getInstance() { return ToolbarPanel.SingleInstanceHolder.INSTANCE; }
 	private static class SingleInstanceHolder { private static final ToolbarPanel INSTANCE = new ToolbarPanel(); }
 
-	// 생성자
+	/// 생성자
+
 	private ToolbarPanel()
 	{
 		// 객체 생성
@@ -43,8 +46,13 @@ public class ToolbarPanel extends JPanel
 		// 툴바 추가
 		add(toolBar, BorderLayout.CENTER);
 	}
-	
-	// 버튼 생성 메서드
+
+	/// Getter
+
+	public ToolMode getCurrentToolMode() { return currentToolMode; }
+
+	/// 버튼 생성
+
 	private JToggleButton createToolButton(String name, String relativeIconPath, ToolMode selectedToolMode)
 	{
 		// 버튼 생성
@@ -64,12 +72,12 @@ public class ToolbarPanel extends JPanel
 		// 버튼 그룹에 버튼 추가 (버튼 단일 선택)
 		buttonGroup.add(button);
 		
-		// 액션 리스너: 버튼 클릭 시 모드 변경 및 리스너 알림
+		// 액션 리스너: 버튼 클릭 시 도구 변경 명령 실행
 		button.addActionListener(e -> {
-			if (button.isSelected() && currentToolMode != selectedToolMode)
+			if(button.isSelected() && currentToolMode != selectedToolMode)
 			{
-				currentToolMode = selectedToolMode;
-				notifyToolSelection(currentToolMode);
+				Command command = new SelectToolCommand(selectedToolMode);
+				command.execute();
 			}
 		});
 		
@@ -78,6 +86,8 @@ public class ToolbarPanel extends JPanel
 		
 		return button;
 	}
+
+	/// 도구 선택 이벤트 관리
 	
 	// 도구 선택 이벤트 리스너 추가 메서드
 	public void addToolSelectionListener(ToolSelectionListener listener) {
@@ -89,6 +99,20 @@ public class ToolbarPanel extends JPanel
 	private void notifyToolSelection(ToolMode selectedToolMode) {
 		for (ToolSelectionListener listener : toolSelectionListeners) {
 			listener.toolSelected(selectedToolMode);
+		}
+	}
+
+	// 도구 변경 메서드
+	public void setCurrentToolMode(ToolMode toolMode)
+	{
+		// 새로운 도구가 선택된 경우
+		if(!toolMode.equals(this.currentToolMode))
+		{
+			// 도구 변경
+			currentToolMode = toolMode;
+
+			// 리스너 알림
+			notifyToolSelection(currentToolMode);
 		}
 	}
 }
