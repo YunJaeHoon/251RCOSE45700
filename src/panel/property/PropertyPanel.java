@@ -45,7 +45,8 @@ public class PropertyPanel extends JPanel implements ComponentSelectionListener,
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.anchor = GridBagConstraints.WEST;
 		
-		// 첫 번째 행: x, y, w, h
+		/// 첫 번째 행: x, y, width, height
+
 		gbc.gridy = 0;
 		
 		gbc.gridx = 0;
@@ -68,7 +69,8 @@ public class PropertyPanel extends JPanel implements ComponentSelectionListener,
 		gbc.gridx = 7;
 		add(heightField, gbc);
 		
-		// 두 번째 행: R, G, B
+		/// 두 번째 행: R, G, B
+
 		gbc.gridy = 1;
 		
 		gbc.gridx = 0;
@@ -85,9 +87,35 @@ public class PropertyPanel extends JPanel implements ComponentSelectionListener,
 		add(new JLabel("B:"), gbc);
 		gbc.gridx = 5;
 		add(blueField, gbc);
-		
-		// 세 번째 행: z-order 버튼
+
+		/// 세 번째 행: Undo/Redo 버튼
+
 		gbc.gridy = 2;
+
+		gbc.gridx = 0;
+		gbc.gridwidth = 4;
+		JButton undoButton = new JButton("←");
+		undoButton.addActionListener(e -> canvasPanel.undo());
+		add(undoButton, gbc);
+
+		gbc.gridx = 4;
+		gbc.gridwidth = 4;
+		JButton redoButton = new JButton("→");
+		redoButton.addActionListener(e -> canvasPanel.redo());
+		add(redoButton, gbc);
+
+		// 빈 패널을 추가하여 남은 공간을 채워 상단 정렬
+		gbc.gridy = 3;
+
+		gbc.gridx = 0;
+		gbc.gridwidth = 8;
+		gbc.weighty = 1.0;
+		gbc.fill = GridBagConstraints.BOTH;
+		add(new JPanel(), gbc);
+		
+		/// 네 번째 행: z-order 버튼
+
+		gbc.gridy = 4;
 		
 		gbc.gridx = 0;
 		gbc.gridwidth = 4;
@@ -100,13 +128,15 @@ public class PropertyPanel extends JPanel implements ComponentSelectionListener,
 		add(sendToBackButton, gbc);
 		
 		// 빈 패널을 추가하여 남은 공간을 채워 상단 정렬
-		gbc.gridy = 3;
+		gbc.gridy = 5;
 		
 		gbc.gridx = 0;
 		gbc.gridwidth = 8;
 		gbc.weighty = 1.0;
 		gbc.fill = GridBagConstraints.BOTH;
 		add(new JPanel(), gbc);
+
+		/// 액션 리스너 설정
 		
 		// 각 필드에 엔터키 입력 시 액션 리스너 추가
 		xField.addActionListener(e -> {

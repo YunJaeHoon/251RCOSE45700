@@ -1,6 +1,7 @@
 package component;
 
 import component.memento.ComponentMemento;
+import panel.property.PropertyPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +12,9 @@ public abstract class Component
 	// 현재 속성
 	protected int startX, startY, endX, endY;
 	protected Color color;
+
+	// 패널
+	private final PropertyPanel propertyPanel = PropertyPanel.getInstance();
 
 	public abstract void draw(Graphics g);
 
@@ -137,15 +141,18 @@ public abstract class Component
 
 	// 기록 저장
 	public ComponentMemento saveState() {
-		return new ComponentMemento(startX, startY, endX, endY, color);
+		return new ComponentMemento(startX, startY, Math.abs(endX - startX), Math.abs(endY - startY), color);
 	}
 
 	// 기록 복원
-	public void restoreState(ComponentMemento memento) {
-		this.startX = memento.startX;
-		this.startY = memento.startY;
-		this.endX = memento.endX;
-		this.endY = memento.endY;
-		this.color = memento.color;
+	public void restoreState(ComponentMemento memento)
+	{
+		propertyPanel.changeX(memento.startX);
+		propertyPanel.changeY(memento.startY);
+		propertyPanel.changeWidth(memento.width);
+		propertyPanel.changeHeight(memento.height);
+		propertyPanel.changeRedCode(memento.color.getRed());
+		propertyPanel.changeGreenCode(memento.color.getGreen());
+		propertyPanel.changeBlueCode(memento.color.getBlue());
 	}
 }

@@ -63,24 +63,6 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 		currentToolLabel = new JLabel();
 		currentToolLabel.setBounds(10, 10, 200, 20);
 		add(currentToolLabel);
-
-		// Undo 버튼
-		JButton undoButton = new JButton("←");
-		undoButton.setBounds(220, 10, 45, 20);
-		undoButton.setMargin(new Insets(0, 0, 0, 0));
-		undoButton.setFocusable(false);
-		undoButton.setToolTipText("Undo");
-		undoButton.addActionListener(e -> undo());
-		add(undoButton);
-
-		// Redo 버튼
-		JButton redoButton = new JButton("→");
-		redoButton.setBounds(270, 10, 45, 20);
-		redoButton.setMargin(new Insets(0, 0, 0, 0));
-		redoButton.setFocusable(false);
-		redoButton.setToolTipText("Redo");
-		redoButton.addActionListener(e -> redo());
-		add(redoButton);
 	}
 
 	/// Getter
