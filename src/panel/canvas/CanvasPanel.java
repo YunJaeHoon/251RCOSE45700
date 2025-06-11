@@ -240,7 +240,7 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 	public void mousePressed(MouseEvent e)
 	{
 		Command command = new MousePressedCommand(e);
-		command.execute();
+		executeCommand(command);
 	}
 	
 	/// 마우스 버튼을 누른채로 드래그했을 때, 이벤트 처리 메서드
@@ -250,6 +250,7 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 	{
 		Command command = new MouseDraggedCommand(e);
 		command.execute();
+		redoStack.clear();
 	}
 	
 	/// 마우스 버튼에서 손을 뗐을 때, 이벤트 처리 메서드
@@ -258,7 +259,7 @@ public class CanvasPanel extends JPanel implements ToolSelectionListener, ColorS
 	public void mouseReleased(MouseEvent e)
 	{
 		Command command = new MouseReleasedCommand(e);
-		command.execute();
+		executeCommand(command);
 	}
 
 	/// 커맨드 실행

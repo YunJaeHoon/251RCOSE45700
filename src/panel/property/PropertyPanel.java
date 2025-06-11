@@ -2,6 +2,7 @@ package panel.property;
 
 import command.*;
 import component.Composite;
+import panel.canvas.CanvasPanel;
 import panel.canvas.ComponentSelectionListener;
 import panel.color.ColorSelectionListener;
 import component.Component;
@@ -30,6 +31,9 @@ public class PropertyPanel extends JPanel implements ComponentSelectionListener,
 	// 싱글톤
 	public static PropertyPanel getInstance() { return PropertyPanel.SingleInstanceHolder.INSTANCE; }
 	private static class SingleInstanceHolder { private static final PropertyPanel INSTANCE = new PropertyPanel(); }
+
+	// 캔버스 패널
+	private final CanvasPanel canvasPanel = CanvasPanel.getInstance();
 
 	// 생성자
 	private PropertyPanel()
@@ -107,43 +111,43 @@ public class PropertyPanel extends JPanel implements ComponentSelectionListener,
 		// 각 필드에 엔터키 입력 시 액션 리스너 추가
 		xField.addActionListener(e -> {
 			Command command = new ChangeXCommand(Integer.parseInt(xField.getText()));
-			command.execute();
+			canvasPanel.executeCommand(command);
 		});
 		yField.addActionListener(e -> {
 			Command command = new ChangeYCommand(Integer.parseInt(yField.getText()));
-			command.execute();
+			canvasPanel.executeCommand(command);
 		});
 		widthField.addActionListener(e -> {
 			Command command = new ChangeWidthCommand(Integer.parseInt(widthField.getText()));
-			command.execute();
+			canvasPanel.executeCommand(command);
 		});
 		heightField.addActionListener(e ->{
 			Command command = new ChangeHeightCommand(Integer.parseInt(heightField.getText()));
-			command.execute();
+			canvasPanel.executeCommand(command);
 		});
 		redField.addActionListener(e -> {
 			Command command = new ChangeRedCodeCommand(Integer.parseInt(redField.getText()));
-			command.execute();
+			canvasPanel.executeCommand(command);
 		});
 		greenField.addActionListener(e -> {
 			Command command = new ChangeGreenCodeCommand(Integer.parseInt(greenField.getText()));
-			command.execute();
+			canvasPanel.executeCommand(command);
 		});
 		blueField.addActionListener(e -> {
 			Command command = new ChangeBlueCodeCommand(Integer.parseInt(blueField.getText()));
-			command.execute();
+			canvasPanel.executeCommand(command);
 		});
 		
 		// 선택한 컴포넌트를 제일 앞으로 보내는 버튼 액션 리스너 추가 (내부 순서 유지)
 		bringToFrontButton.addActionListener(e -> {
 			Command command = new BringToFrontCommand();
-			command.execute();
+			canvasPanel.executeCommand(command);
 		});
 		
 		// 선택한 컴포넌트를 제일 뒤로 보내는 버튼 액션 리스너 추가 (내부 순서 유지)
 		sendToBackButton.addActionListener(e -> {
 			Command command = new SendToBackCommand();
-			command.execute();
+			canvasPanel.executeCommand(command);
 		});
 	}
 	
