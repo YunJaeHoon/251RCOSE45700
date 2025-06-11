@@ -1,11 +1,14 @@
 package component;
 
+import component.memento.ComponentMemento;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.Rectangle;
 
 public abstract class Component
 {
+	// 현재 속성
 	protected int startX, startY, endX, endY;
 	protected Color color;
 
@@ -128,5 +131,21 @@ public abstract class Component
 
 		// 크기 조절 핸들 표시
 		g.fillRect(bounds.x + bounds.width, bounds.y + bounds.height, 10, 10);
+	}
+
+	/// 스냅샷
+
+	// 기록 저장
+	public ComponentMemento saveState() {
+		return new ComponentMemento(startX, startY, endX, endY, color);
+	}
+
+	// 기록 복원
+	public void restoreState(ComponentMemento memento) {
+		this.startX = memento.startX;
+		this.startY = memento.startY;
+		this.endX = memento.endX;
+		this.endY = memento.endY;
+		this.color = memento.color;
 	}
 }
